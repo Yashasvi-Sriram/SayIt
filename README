@@ -1,0 +1,3 @@
+
+1. export DJANGO_SETTINGS_MODULE=SayIt_Dj.settings
+2. setup Django using django()
