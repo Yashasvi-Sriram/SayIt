@@ -1,8 +1,8 @@
-//package com.withjarvis.sayit.SocketStation;
+package com.withjarvis.sayit.SocketStation;
 
-//import android.util.Log;
+import android.util.Log;
 
-//import com.withjarvis.sayit.JLog.JLog;
+import com.withjarvis.sayit.JLog.JLog;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -53,7 +53,7 @@ public class SocketStation {
             // Keep track of it's input and output streams
             this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            // Log.i(JLog.TAG, "Connection Established to " + this.socket.getRemoteSocketAddress());
+            Log.i(JLog.TAG, "Connection Established to " + this.socket.getRemoteSocketAddress());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class SocketStation {
             System.out.println(packet_builder.toString());
             this.writer.write(packet_builder.toString());
             this.writer.flush();
-            // Log.i(JLog.TAG, "Sent data : to " + this.serverAddress + " on port " + this.port);
+            Log.i(JLog.TAG, "Sent data : to " + this.serverAddress + " on port " + this.port);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,8 +116,8 @@ public class SocketStation {
             }
             String body_with_newline = body_builder.toString();
             // Removes the last newline appended for reading purpose
+            Log.i(JLog.TAG, "Received data : from " + this.serverAddress + " on port " + this.port);
             return body_with_newline.substring(0, body_with_newline.length() - 1);
-            // Log.i(JLog.TAG, "Received data : from " + this.serverAddress + " on port " + this.port);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -132,7 +132,7 @@ public class SocketStation {
             // If the socket is not already closed close it
             if (!this.socket.isClosed())
                 this.socket.close();
-            // Log.i(JLog.TAG, "Connection closed properly with " + this.socket.getRemoteSocketAddress());
+            Log.i(JLog.TAG, "Connection closed properly with " + this.socket.getRemoteSocketAddress());
         } catch (IOException e) {
             e.printStackTrace();
         }

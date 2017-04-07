@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SayIt</string>
+    <string name="title_activity_chat_window">ChatWindow</string>
 </resources>
