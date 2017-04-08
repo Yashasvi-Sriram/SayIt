@@ -49,10 +49,12 @@ def start_talking(socket_station):
         actions.log_in(socket_station)
 
     elif query_type == Flags.QueryType.UPDATE_ACCOUNT:
-        pass
+        # Pass control to action
+        actions.update_account(socket_station)
 
     elif query_type == Flags.QueryType.DELETE_ACCOUNT:
-        pass
+        # Pass control to action
+        actions.delete_account(socket_station)
 
 
 # Setup a Server Socket

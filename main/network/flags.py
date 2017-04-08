@@ -12,6 +12,7 @@ class Flags:
         SUCCESS = '51'
         FAILURE = '52'
         HANDLE_ALREADY_EXIST = '53'
+        INVALID_CREDENTIALS = '54'
 
         def __init__(self):
             pass

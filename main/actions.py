@@ -44,8 +44,7 @@ def sign_up(socket_station):
     2. (no need)
     3. Expected Format
         name, handle, password (blocks in that order)
-    4. send proper Response to client
-
+    4. send success or handle already exists
     """
     name = socket_station.receive()
     handle = socket_station.receive()
@@ -67,18 +66,63 @@ def log_in(socket_station):
     :param socket_station: SocketStation instance
 
     1. (done)
-    2. done using is_valid_user() function
+    2. see whether such a user exists
     3. Expected Format handle, password (blocks in that order)
-        ...Actually 2 and 3 are same for this action
-    4. send success or failure, if success send user's name also
+    4. send success or invalid credentials, if success send user's name also
     """
     handle = socket_station.receive()
     password = socket_station.receive()
     try:
         user = User.objects.get(handle=handle, password=password)
-        print 'Login successful for handle ', handle
+        print 'Login successful for handle : ', handle
         socket_station.send(Flags.ResponseType.SUCCESS)
         socket_station.send(user.name)
     except ObjectDoesNotExist:
-        print 'Login failed for handle ', handle
-        socket_station.send(Flags.ResponseType.FAILURE)
+        print 'Login failed for handle : ', handle
+        socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
+
+
+def update_account(socket_station):
+    """
+    :param socket_station: SocketStation instance
+
+    1. (done)
+    2. see whether such a user exists
+    3. Expected Format handle, old_password, new_name, new_password (blocks in that order)
+    4. send success or invalid credentials
+    """
+    handle = socket_station.receive()
+    old_password = socket_station.receive()
+    new_name = socket_station.receive()
+    new_password = socket_station.receive()
+    try:
+        user = User.objects.get(handle=handle, password=old_password)
+        user.name = new_name
+        user.password = new_password
+        user.save()
+        print 'Update account successful for handle : ', handle
+        socket_station.send(Flags.ResponseType.SUCCESS)
+    except ObjectDoesNotExist:
+        print 'Update account failed for handle : ', handle
+        socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
+
+
+def delete_account(socket_station):
+    """
+    :param socket_station: SocketStation instance
+
+    1. (done)
+    2. see whether such a user exists
+    3. Expected Format handle, password (blocks in that order)
+    4. send success or invalid credentials
+    """
+    handle = socket_station.receive()
+    password = socket_station.receive()
+    try:
+        user = User.objects.get(handle=handle, password=password)
+        user.delete()
+        print 'Delete account successful for handle : ', handle
+        socket_station.send(Flags.ResponseType.SUCCESS)
+    except ObjectDoesNotExist:
+        print 'Delete account failed for handle : ', handle
+        socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
