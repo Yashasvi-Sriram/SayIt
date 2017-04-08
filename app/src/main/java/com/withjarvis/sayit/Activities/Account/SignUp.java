@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.withjarvis.sayit.Activities.People;
 import com.withjarvis.sayit.JLog.JLog;
+import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;
 import com.withjarvis.sayit.Network.Flags;
 import com.withjarvis.sayit.Network.SocketStation;
@@ -172,9 +173,9 @@ public class SignUp extends AppCompatActivity {
             }
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
                     Intent to_people = new Intent(SignUp.this, People.class);
                     startActivity(to_people);
+                    Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
                     break;
                 case Flags.ResponseType.HANDLE_ALREADY_EXIST:
                     Toast.makeText(SignUp.this, "Handle Already Exits", Toast.LENGTH_LONG).show();

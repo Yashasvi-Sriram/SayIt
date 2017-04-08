@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.withjarvis.sayit.Activities.People;
 import com.withjarvis.sayit.JLog.JLog;
+import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;
 import com.withjarvis.sayit.Network.Flags;
 import com.withjarvis.sayit.Network.SocketStation;
@@ -174,9 +175,9 @@ public class UpdateAccount extends AppCompatActivity {
 
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    Toast.makeText(UpdateAccount.this, "Updated successfully", Toast.LENGTH_LONG).show();
                     Intent to_people = new Intent(UpdateAccount.this, People.class);
                     startActivity(to_people);
+                    Toast.makeText(UpdateAccount.this, "Updated successfully", Toast.LENGTH_LONG).show();
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(UpdateAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();

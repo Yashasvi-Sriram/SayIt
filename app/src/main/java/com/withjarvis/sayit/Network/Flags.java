@@ -7,6 +7,9 @@ public class Flags {
         public static final String LOG_IN = "2";
         public static final String UPDATE_ACCOUNT = "3";
         public static final String DELETE_ACCOUNT = "4";
+        public static final String FILTER_USERS = "5";
+        public static final String NEW_MESSAGE = "6";
+        public static final String FILTER_MESSAGES = "7";
     }
 
     public class ResponseType {

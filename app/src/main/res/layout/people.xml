@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/people"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.withjarvis.sayit.Activities.People"
-    android:id="@+id/people">
+    tools:context="com.withjarvis.sayit.Activities.People">
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/search_div"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content">
 
-    </ScrollView>
+        <EditText
+            android:id="@+id/search_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/submit" />
+
+        <Button
+            android:id="@+id/submit"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="serif-monospace"
+            android:text="Go" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

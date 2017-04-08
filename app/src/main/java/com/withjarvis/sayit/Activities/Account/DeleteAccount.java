@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.withjarvis.sayit.JLog.JLog;
+import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;
 import com.withjarvis.sayit.Network.Flags;
 import com.withjarvis.sayit.Network.SocketStation;
@@ -153,11 +154,13 @@ public class DeleteAccount extends AppCompatActivity {
             Intent to_log_in = new Intent(DeleteAccount.this, LogIn.class);
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    Toast.makeText(DeleteAccount.this, "De-activated successfully", Toast.LENGTH_LONG).show();
                     startActivity(to_log_in);
+                    Toast.makeText(DeleteAccount.this, "De-activated successfully", Toast.LENGTH_LONG).show();
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
+                    startActivity(to_log_in);
                     Toast.makeText(DeleteAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeleteAccount.this, "Log In to continue", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     Toast.makeText(DeleteAccount.this, response, Toast.LENGTH_LONG).show();

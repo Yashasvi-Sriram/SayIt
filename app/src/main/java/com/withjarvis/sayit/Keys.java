@@ -1,4 +1,4 @@
-package com.withjarvis.sayit.Activities.Account;
+package com.withjarvis.sayit;
 
 public class Keys {
 
