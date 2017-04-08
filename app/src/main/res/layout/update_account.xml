@@ -13,14 +13,6 @@
         android:layout_height="wrap_content">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="serif-monospace"
-            android:text="My Account"
-            android:textSize="60dp" />
-
         <LinearLayout
             android:id="@+id/credentials_div"
             android:layout_width="match_parent"
@@ -30,16 +22,15 @@
             android:layout_marginStart="10dp"
             android:orientation="vertical">
 
-
-            <EditText
-                android:id="@+id/name_input"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif-monospace"
-                android:hint="Name" />
+                android:text="My Account"
+                android:textSize="40sp" />
 
             <EditText
-                android:id="@+id/handle_input"
+                android:id="@+id/old_handle_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -55,11 +46,30 @@
                 android:hint="Password"
                 android:inputType="textPassword" />
 
+
+            <EditText
+                android:id="@+id/new_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="serif-monospace"
+                android:hint="New Name" />
+
+
+            <EditText
+                android:id="@+id/new_handle_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="serif-monospace"
+                android:hint="New Handle" />
+
+
             <EditText
                 android:id="@+id/new_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="serif-monospace"
                 android:hint="New Password"
                 android:inputType="textPassword" />

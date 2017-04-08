@@ -26,7 +26,7 @@ public class DeleteAccount extends AppCompatActivity {
         /* Getting Views */
         this.delete_account = (RelativeLayout) findViewById(R.id.delete_account);
         this.credentials_div = (LinearLayout) this.delete_account.findViewById(R.id.credentials_div);
-        this.handle_input = (EditText) this.credentials_div.findViewById(R.id.handle_input);
+        this.handle_input = (EditText) this.credentials_div.findViewById(R.id.old_handle_input);
         this.password_input = (EditText) this.credentials_div.findViewById(R.id.password_input);
         this.submit = (Button) this.credentials_div.findViewById(R.id.submit);
     }

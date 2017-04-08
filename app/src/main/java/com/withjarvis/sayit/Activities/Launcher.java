@@ -1,9 +1,10 @@
 package com.withjarvis.sayit.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
+import com.withjarvis.sayit.Activities.Account.LogIn;
 import com.withjarvis.sayit.R;
 
 public class Launcher extends AppCompatActivity {
@@ -13,7 +14,8 @@ public class Launcher extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher);
 
-        Intent to_chat_window = new Intent(this, ChatWindow.class);
-        this.startActivity(to_chat_window);
+        Intent to_log_in = new Intent(this, LogIn.class);
+        this.startActivity(to_log_in);
+
     }
 }

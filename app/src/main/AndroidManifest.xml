@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.withjarvis.sayit">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_sayit"
@@ -20,7 +22,8 @@
         <activity android:name=".Activities.Account.LogIn" />
         <activity android:name=".Activities.Account.SignUp" />
         <activity android:name=".Activities.Account.UpdateAccount" />
-        <activity android:name=".Activities.Account.DeleteAccount"></activity>
+        <activity android:name=".Activities.Account.DeleteAccount" />
+        <activity android:name=".Activities.People"></activity>
     </application>
 
 </manifest>

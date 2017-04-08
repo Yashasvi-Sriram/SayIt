@@ -1,0 +1,15 @@
+Protocol (as seen by client)
+    1.I need this?
+        - Format : (using an query-int map identical at server and all clients)
+            Integer
+
+    2.I am so and so?
+        - Format : Blocks sent in this order (not required for sign up)
+            Handle, Password
+        - For other than sign up credentials are required
+
+    3.I specifically need this...
+        - More options transferred as required by the query
+
+    4.Please give my response
+        - Send the response to the client
