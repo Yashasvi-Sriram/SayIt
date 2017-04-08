@@ -1,6 +1,3 @@
-import socket
-
-
 class SocketStation:
     # Must be same for client and server
     # Cannot be a digit
@@ -9,7 +6,7 @@ class SocketStation:
     head_body_delimiter = '\n'
 
     # Buffer_size in powers of 2 is better
-    r_buffer_size = 8
+    r_buffer_size = 1024
 
     # Must be same for client and server
     # Max number of digits in length of body received

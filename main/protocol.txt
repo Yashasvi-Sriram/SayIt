@@ -1,0 +1,17 @@
+Protocol (as seen by server)
+    1.What do you want?
+        - Format : (using an query-int map identical at server and all clients)
+            Integer
+    
+The next steps are implemented using actions
+
+    2.Who are you?
+        - Format : Blocks sent in this order (not required for sign up)
+            Handle, Password
+        - For other than sign up credentials are required
+
+    3.Tell me more
+        - More options transferred as required by the query
+
+    4.So your answer is ...
+        - Send the response to the client
