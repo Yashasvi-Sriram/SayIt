@@ -13,5 +13,6 @@ public class Flags {
         public static final String SUCCESS = "51";
         public static final String FAILURE = "52";
         public static final String HANDLE_ALREADY_EXIST = "53";
+        public static final String INVALID_CREDENTIALS = "54";
     }
 }

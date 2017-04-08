@@ -34,6 +34,8 @@ public class SignUp extends AppCompatActivity {
     Button submit;
     Button to_log_in;
 
+    boolean can_send_request = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +44,8 @@ public class SignUp extends AppCompatActivity {
         /* Getting Views */
         this.sign_up = (RelativeLayout) findViewById(R.id.sign_up);
         this.credentials_div = (LinearLayout) this.sign_up.findViewById(R.id.credentials_div);
-        this.name_input = (EditText) this.credentials_div.findViewById(R.id.new_name_input);
-        this.handle_input = (EditText) this.credentials_div.findViewById(R.id.old_handle_input);
+        this.name_input = (EditText) this.credentials_div.findViewById(R.id.name_input);
+        this.handle_input = (EditText) this.credentials_div.findViewById(R.id.handle_input);
         this.password_input = (EditText) this.credentials_div.findViewById(R.id.password_input);
         this.submit = (Button) this.credentials_div.findViewById(R.id.submit);
         this.to_log_in = (Button) this.sign_up.findViewById(R.id.to_log_in);
@@ -60,11 +62,14 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Empty Inputs not allowed", Toast.LENGTH_LONG).show();
                     return;
                 }
-                new SignUpRequest().execute(
-                        name,
-                        handle,
-                        password
-                );
+
+                if (can_send_request) {
+                    new SignUpRequest().execute(
+                            name,
+                            handle,
+                            password
+                    );
+                }
             }
         });
 
@@ -100,6 +105,8 @@ public class SignUp extends AppCompatActivity {
             String name = params[0];
             String handle = params[1];
             String password = params[2];
+
+            can_send_request = false;
             // Creating a socket
             try {
                 SocketStation ss = new SocketStation(Config.SERVER_IP, Config.SERVER_PORT);
@@ -142,6 +149,7 @@ public class SignUp extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+            can_send_request = true;
             // EOL Exception (Server dies in middle)
             if (response == null) {
                 Toast.makeText(SignUp.this, "Network Error", Toast.LENGTH_LONG).show();

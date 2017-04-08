@@ -63,7 +63,7 @@ public class LogIn extends AppCompatActivity {
         /* Getting Views */
         this.log_in = (RelativeLayout) findViewById(R.id.log_in);
         this.credentials_div = (LinearLayout) this.log_in.findViewById(R.id.credentials_div);
-        this.handle_input = (EditText) this.credentials_div.findViewById(R.id.old_handle_input);
+        this.handle_input = (EditText) this.credentials_div.findViewById(R.id.handle_input);
         this.password_input = (EditText) this.credentials_div.findViewById(R.id.password_input);
         this.submit = (Button) this.credentials_div.findViewById(R.id.submit);
         this.to_sign_up = (Button) this.log_in.findViewById(R.id.to_sign_up);
@@ -75,6 +75,12 @@ public class LogIn extends AppCompatActivity {
                 /* todo cleanse inputs */
                 String handle = handle_input.getText().toString();
                 String password = password_input.getText().toString();
+
+                if (handle.equals("") || password.equals("")) {
+                    Toast.makeText(LogIn.this, "Empty Inputs not allowed", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (can_send_request) {
                     new LogInRequest().execute(
                             handle,
@@ -167,7 +173,7 @@ public class LogIn extends AppCompatActivity {
                     Intent to_people = new Intent(LogIn.this, People.class);
                     startActivity(to_people);
                     break;
-                case Flags.ResponseType.FAILURE:
+                case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(LogIn.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
                     break;
                 default:

@@ -30,40 +30,29 @@
                 android:textSize="40sp" />
 
             <EditText
-                android:id="@+id/old_handle_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="serif-monospace"
-                android:hint="Handle" />
-
-            <EditText
                 android:id="@+id/old_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="serif-monospace"
                 android:hint="Password"
                 android:inputType="textPassword" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="serif-monospace"
+                android:text="New Credentials"
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/new_name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="serif-monospace"
-                android:hint="New Name" />
-
-
-            <EditText
-                android:id="@+id/new_handle_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="serif-monospace"
-                android:hint="New Handle" />
-
+                android:hint="New Name" />
 
             <EditText
                 android:id="@+id/new_password_input"
@@ -90,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="serif-monospace"
-                android:hint="Go" />
+                android:hint="Update" />
 
         </LinearLayout>
 

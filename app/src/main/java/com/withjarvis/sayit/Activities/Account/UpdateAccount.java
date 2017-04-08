@@ -1,31 +1,42 @@
 package com.withjarvis.sayit.Activities.Account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.withjarvis.sayit.Activities.People;
+import com.withjarvis.sayit.JLog.JLog;
+import com.withjarvis.sayit.Network.Config;
+import com.withjarvis.sayit.Network.Flags;
+import com.withjarvis.sayit.Network.SocketStation;
 import com.withjarvis.sayit.R;
 
-public class UpdateAccount extends AppCompatActivity {
+import java.io.IOException;
 
+public class UpdateAccount extends AppCompatActivity {
 
     /* Views */
     RelativeLayout update_account;
     LinearLayout credentials_div;
-    EditText old_handle_input;
     EditText old_password_input;
     EditText new_name_input;
-    EditText new_handle_input;
     EditText new_password_input;
     EditText confirm_password_input;
     Button submit;
 
     SharedPreferences shp;
+
+    boolean can_send_request = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +46,8 @@ public class UpdateAccount extends AppCompatActivity {
         /* Getting Views */
         this.update_account = (RelativeLayout) findViewById(R.id.update_account);
         this.credentials_div = (LinearLayout) this.update_account.findViewById(R.id.credentials_div);
-        this.old_handle_input = (EditText) this.credentials_div.findViewById(R.id.old_handle_input);
         this.old_password_input = (EditText) this.credentials_div.findViewById(R.id.old_password_input);
         this.new_name_input = (EditText) this.credentials_div.findViewById(R.id.new_name_input);
-        this.new_handle_input = (EditText) this.credentials_div.findViewById(R.id.new_handle_input);
         this.new_password_input = (EditText) this.credentials_div.findViewById(R.id.new_password_input);
         this.confirm_password_input = (EditText) this.credentials_div.findViewById(R.id.confirm_password_input);
         this.submit = (Button) this.credentials_div.findViewById(R.id.submit);
@@ -49,9 +58,125 @@ public class UpdateAccount extends AppCompatActivity {
         String name = this.shp.getString(Keys.SHARED_PREFERENCES.NAME, null);
         String handle = this.shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
 
-        this.old_handle_input.setText(handle);
-
+        /* Auto fill */
         this.new_name_input.setText(name);
-        this.new_handle_input.setText(handle);
+
+        /* Submit Listener */
+        this.submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String handle = shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
+                String old_password = old_password_input.getText().toString();
+                String new_name = new_name_input.getText().toString();
+                String new_password = new_password_input.getText().toString();
+                String confirm_password = confirm_password_input.getText().toString();
+
+                if (!new_password.equals(confirm_password)) {
+                    Toast.makeText(UpdateAccount.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (can_send_request) {
+                    new UpdateAccountRequest().execute(
+                            handle,
+                            old_password,
+                            new_name,
+                            new_password
+                    );
+                }
+            }
+        });
     }
+
+    /**
+     * Connects to Server via TCP socket and requests for update account
+     * with the given params
+     * <p>
+     * Format Sent
+     * query_type, handle, old_password, new_name, new_password (blocks in that order)
+     */
+    private class UpdateAccountRequest extends AsyncTask<String, String, String> {
+
+        /**
+         * params seq : handle, old_password, new_name, new_password
+         */
+        @Override
+        protected String doInBackground(String[] params) {
+            String handle = params[0];
+            String old_password = params[1];
+            String new_name = params[2];
+            String new_password = params[3];
+            can_send_request = false;
+
+            // Creating a socket
+            try {
+                SocketStation ss = new SocketStation(Config.SERVER_IP, Config.SERVER_PORT);
+
+                // Sending QueryType
+                ss.send(Flags.QueryType.UPDATE_ACCOUNT);
+                // Sending handle
+                ss.send(handle);
+                // Sending password
+                ss.send(old_password);
+                // Sending new name
+                ss.send(new_name);
+                // Sending new password
+                ss.send(new_password);
+
+                // Receive Response
+                String response = ss.receive();
+
+                // EOL Exception (Server dies in middle)
+                if (response == null) {
+                    return null;
+                }
+
+                // If delete account success remove stored name, handle, password
+                if (response.equals(Flags.ResponseType.SUCCESS)) {
+                    SharedPreferences.Editor shEditor = shp.edit();
+                    shEditor.putString(Keys.SHARED_PREFERENCES.NAME, new_name);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, handle);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, new_password);
+                    shEditor.commit();
+                }
+
+                return response;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Server connection refused";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            can_send_request = true;
+            // EOL Exception (Server dies in middle)
+            if (response == null) {
+                Toast.makeText(UpdateAccount.this, "Network Error", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            switch (response) {
+                case Flags.ResponseType.SUCCESS:
+                    Toast.makeText(UpdateAccount.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                    Intent to_people = new Intent(UpdateAccount.this, People.class);
+                    startActivity(to_people);
+                    break;
+                case Flags.ResponseType.INVALID_CREDENTIALS:
+                    Toast.makeText(UpdateAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(UpdateAccount.this, response, Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            can_send_request = true;
+            Log.i(JLog.TAG, "Delete Account Request Cancelled");
+        }
+    }
+
 }

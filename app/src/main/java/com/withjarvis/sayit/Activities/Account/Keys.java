@@ -6,6 +6,8 @@ public class Keys {
         // FILE NAME
         public static final String FILE = "jarvis.say_it.shared_preferences";
 
+        // PK
+        public static final String PK = "pk";
         // NAME
         public static final String NAME = "name";
         // HANDLE
