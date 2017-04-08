@@ -1,5 +1,6 @@
 package com.withjarvis.sayit.Activities.Account;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -97,6 +98,18 @@ public class UpdateAccount extends AppCompatActivity {
      */
     private class UpdateAccountRequest extends AsyncTask<String, String, String> {
 
+        ProgressDialog progressDialog = new ProgressDialog(UpdateAccount.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.progressDialog.setMessage("Connecting ...");
+            this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.progressDialog.setCancelable(false);
+            this.progressDialog.setCanceledOnTouchOutside(false);
+            this.progressDialog.setIndeterminate(true);
+            this.progressDialog.show();
+        }
+
         /**
          * params seq : handle, old_password, new_name, new_password
          */
@@ -150,6 +163,8 @@ public class UpdateAccount extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+            this.progressDialog.dismiss();
+
             can_send_request = true;
             // EOL Exception (Server dies in middle)
             if (response == null) {

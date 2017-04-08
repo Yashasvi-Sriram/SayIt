@@ -1,5 +1,6 @@
 package com.withjarvis.sayit.Activities.Account;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,6 +83,18 @@ public class DeleteAccount extends AppCompatActivity {
      */
     private class DeleteAccountRequest extends AsyncTask<String, String, String> {
 
+        ProgressDialog progressDialog = new ProgressDialog(DeleteAccount.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.progressDialog.setMessage("Connecting ...");
+            this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.progressDialog.setCancelable(false);
+            this.progressDialog.setCanceledOnTouchOutside(false);
+            this.progressDialog.setIndeterminate(true);
+            this.progressDialog.show();
+        }
+
         /**
          * params seq : handle, password
          */
@@ -128,6 +141,8 @@ public class DeleteAccount extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+            this.progressDialog.dismiss();
+
             can_send_request = true;
             // EOL Exception (Server dies in middle)
             if (response == null) {

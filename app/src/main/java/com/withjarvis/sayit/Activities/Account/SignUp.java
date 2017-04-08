@@ -1,5 +1,6 @@
 package com.withjarvis.sayit.Activities.Account;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -97,6 +98,18 @@ public class SignUp extends AppCompatActivity {
      */
     private class SignUpRequest extends AsyncTask<String, String, String> {
 
+        ProgressDialog progressDialog = new ProgressDialog(SignUp.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.progressDialog.setMessage("Connecting ...");
+            this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.progressDialog.setCancelable(false);
+            this.progressDialog.setCanceledOnTouchOutside(false);
+            this.progressDialog.setIndeterminate(true);
+            this.progressDialog.show();
+        }
+
         /**
          * params seq : name, handle, password
          */
@@ -149,6 +162,8 @@ public class SignUp extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
+            this.progressDialog.dismiss();
+
             can_send_request = true;
             // EOL Exception (Server dies in middle)
             if (response == null) {
