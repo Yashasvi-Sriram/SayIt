@@ -5,6 +5,10 @@ class Flags:
         UPDATE_ACCOUNT = '3'
         DELETE_ACCOUNT = '4'
 
+        FILTER_USERS = '5'
+        NEW_MESSAGE = '6'
+        FILTER_MESSAGES = '7'
+
         def __init__(self):
             pass
 

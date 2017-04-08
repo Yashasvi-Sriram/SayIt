@@ -2,17 +2,17 @@
 
 import socket
 
-from network.socket_station import SocketStation
+import django
+
 from network.config import Config
 from network.flags import Flags
-
-import django
+from network.socket_station import SocketStation
 
 # Initialize django services
 # This should be before any import related to django
 django.setup()
 
-from . import actions
+from main.network import actions
 
 """
 Protocol (as seen by server)
@@ -55,6 +55,16 @@ def start_talking(socket_station):
     elif query_type == Flags.QueryType.DELETE_ACCOUNT:
         # Pass control to action
         actions.delete_account(socket_station)
+
+    elif query_type == Flags.QueryType.FILTER_USERS:
+        # Pass control to action
+        actions.filter_people(socket_station)
+
+    elif query_type == Flags.QueryType.NEW_MESSAGE:
+        pass
+
+    elif query_type == Flags.QueryType.FILTER_MESSAGES:
+        pass
 
 
 # Setup a Server Socket

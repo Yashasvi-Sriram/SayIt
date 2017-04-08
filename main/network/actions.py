@@ -1,6 +1,9 @@
+import json
+
 from django.core.exceptions import ObjectDoesNotExist
-from .models import User
-from .network.flags import Flags
+from main.models import User
+from main.network.flags import Flags
+from .keys import Keys
 
 """
 Protocol (as seen by server)
@@ -125,4 +128,35 @@ def delete_account(socket_station):
         socket_station.send(Flags.ResponseType.SUCCESS)
     except ObjectDoesNotExist:
         print 'Delete account failed for handle : ', handle
+        socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
+
+
+def filter_people(socket_station):
+    """
+    :param socket_station: SocketStation instance
+
+    1. (done)
+    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
+    3. Expected Format regex_string
+    4. send success or invalid credentials
+    """
+    handle = socket_station.receive()
+    password = socket_station.receive()
+    regex_string = socket_station.receive()
+    if is_valid_user(handle, password):
+        json_response = []
+        filtered_users = User.objects.filter(name__regex=regex_string)
+        for filtered_user in filtered_users:
+            filtered_user_dict = {
+                Keys.JSON.PK: filtered_user.pk,
+                Keys.JSON.NAME: filtered_user.name,
+                Keys.JSON.HANDLE: filtered_user.handle
+            }
+            json_response.append(filtered_user_dict)
+
+        print 'Filter people success for the regex : ', regex_string
+        socket_station.send(Flags.ResponseType.SUCCESS)
+        socket_station.send(json.dumps(json_response))
+    else:
+        print 'Filter people failed [Invalid Credentials] for the handle : ', handle
         socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
