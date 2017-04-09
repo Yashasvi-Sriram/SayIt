@@ -65,6 +65,11 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
+                if (name.length() > 50 || handle.length() > 50 || password.length() > 50) {
+                    Toast.makeText(SignUp.this, "Max characters allowed 50", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (can_send_request) {
                     new SignUpRequest().execute(
                             name,
@@ -178,7 +183,7 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
                     break;
                 case Flags.ResponseType.HANDLE_ALREADY_EXIST:
-                    Toast.makeText(SignUp.this, "Handle Already Exits", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUp.this, "Handle Already Exists", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     Toast.makeText(SignUp.this, response, Toast.LENGTH_LONG).show();

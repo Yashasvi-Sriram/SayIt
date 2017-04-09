@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.withjarvis.sayit.Activities.Account.DeleteAccount;
 import com.withjarvis.sayit.Activities.Account.LogIn;
 import com.withjarvis.sayit.Activities.Account.UpdateAccount;
-import com.withjarvis.sayit.Activities.Account.PeopleListAdapter;
 import com.withjarvis.sayit.JLog.JLog;
 import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;
@@ -38,7 +37,7 @@ public class People extends AppCompatActivity {
     RelativeLayout search_div;
     EditText search_text_input;
     Button submit;
-    ListView peopleListView;
+    ListView people_list_view;
 
     SharedPreferences shp;
 
@@ -57,7 +56,7 @@ public class People extends AppCompatActivity {
         this.search_div = (RelativeLayout) this.people.findViewById(R.id.search_div);
         this.search_text_input = (EditText) this.search_div.findViewById(R.id.search_text_input);
         this.submit = (Button) this.search_div.findViewById(R.id.submit);
-        this.peopleListView = (ListView) this.people.findViewById(R.id.peopleListView);
+        this.people_list_view = (ListView) this.people.findViewById(R.id.people_list_view);
 
         /* Submit Listener */
         this.submit.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +205,7 @@ public class People extends AppCompatActivity {
             }
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    peopleListView.setAdapter(new PeopleListAdapter(People.this, this.json_string_response));
+                    people_list_view.setAdapter(new PeopleListAdapter(People.this, this.json_string_response));
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(People.this, "Invalid Credentials", Toast.LENGTH_LONG).show();

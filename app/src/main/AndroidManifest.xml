@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ChatWindow" />
+        <!--Activities-->
         <activity android:name=".Activities.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,8 +23,13 @@
         <activity android:name=".Activities.Account.SignUp" />
         <activity android:name=".Activities.Account.UpdateAccount" />
         <activity android:name=".Activities.Account.DeleteAccount" />
-        <activity android:name=".Activities.People" />
-        <activity android:name=".Activities.Account.PeopleListAdapter"></activity>
+        <activity
+            android:name=".Activities.People"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.ChatWindow"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

@@ -4,31 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.withjarvis.sayit.Activities.Account.PeopleListAdapter">
+    tools:context="com.withjarvis.sayit.Activities.PeopleListAdapter">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/people_list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="20sp">
+
 
         <TextView
-            android:id="@+id/userName"
-            android:layout_width="match_parent"
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="serif-monospace"
-            android:textSize="35sp"
+            android:fontFamily="cursive"
+            android:textColor="#000"
+            android:textSize="20sp"
             android:text="Name"/>
 
         <TextView
             android:id="@+id/handle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="serif-monospace"
-            android:layout_marginTop="10dp"
+            android:fontFamily="cursive"
             android:textSize="20sp"
+            android:layout_below="@id/name"
+            android:textColor="@color/colorAccent"
             android:text="Handle"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -15,7 +15,11 @@
             android:id="@+id/search_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/submit" />
+            android:layout_toStartOf="@id/submit"
+            android:background="@drawable/search_box_bg"
+            android:fontFamily="monospace"
+            android:hint="Search for people"
+            android:padding="16sp" />
 
         <Button
             android:id="@+id/submit"
@@ -23,17 +27,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="serif-monospace"
-            android:text="Go" />
+            android:fontFamily="monospace"
+            android:text="Search" />
 
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/peopleListView"
+        android:id="@+id/people_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/search_div"
-        android:layout_marginStart="11dp" />
+        android:layout_marginTop="10sp" />
 
 </RelativeLayout>
