@@ -17,6 +17,7 @@ class Flags:
         FAILURE = '52'
         HANDLE_ALREADY_EXIST = '53'
         INVALID_CREDENTIALS = '54'
+        INVALID_REGEX = '55'
 
         def __init__(self):
             pass

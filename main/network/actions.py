@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from main.models import User
 from main.network.flags import Flags
 from .keys import Keys
+import re
 
 """
 Protocol (as seen by server)
@@ -143,9 +144,18 @@ def filter_people(socket_station):
     handle = socket_station.receive()
     password = socket_station.receive()
     regex_string = socket_station.receive()
+    try:
+        re.compile(regex_string)
+    except re.error:
+        print 'Filter people failed invalid regex : ', regex_string
+        socket_station.send(Flags.ResponseType.INVALID_REGEX)
+        return
+
     if is_valid_user(handle, password):
         json_response = []
-        filtered_users = User.objects.filter(name__regex=regex_string)
+
+        filtered_users = User.objects.filter(name__iregex=regex_string)
+
         for filtered_user in filtered_users:
             filtered_user_dict = {
                 Keys.JSON.PK: filtered_user.pk,
