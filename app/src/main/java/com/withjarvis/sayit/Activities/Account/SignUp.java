@@ -178,9 +178,9 @@ public class SignUp extends AppCompatActivity {
             }
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
+                    Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
                     Intent to_people = new Intent(SignUp.this, People.class);
                     startActivity(to_people);
-                    Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
                     break;
                 case Flags.ResponseType.HANDLE_ALREADY_EXIST:
                     Toast.makeText(SignUp.this, "Handle Already Exists", Toast.LENGTH_LONG).show();

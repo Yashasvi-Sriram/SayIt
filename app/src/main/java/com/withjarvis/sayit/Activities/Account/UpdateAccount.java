@@ -152,6 +152,12 @@ public class UpdateAccount extends AppCompatActivity {
                     shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, handle);
                     shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, new_password);
                     shEditor.commit();
+                } else if (response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
+                    SharedPreferences.Editor shEditor = shp.edit();
+                    shEditor.putString(Keys.SHARED_PREFERENCES.NAME, null);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, null);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, null);
+                    shEditor.commit();
                 }
 
                 return response;
@@ -175,12 +181,15 @@ public class UpdateAccount extends AppCompatActivity {
 
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
+                    Toast.makeText(UpdateAccount.this, "Updated successfully", Toast.LENGTH_LONG).show();
                     Intent to_people = new Intent(UpdateAccount.this, People.class);
                     startActivity(to_people);
-                    Toast.makeText(UpdateAccount.this, "Updated successfully", Toast.LENGTH_LONG).show();
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(UpdateAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateAccount.this, "Log In to continue", Toast.LENGTH_SHORT).show();
+                    Intent to_log_in = new Intent(UpdateAccount.this, People.class);
+                    startActivity(to_log_in);
                     break;
                 default:
                     Toast.makeText(UpdateAccount.this, response, Toast.LENGTH_LONG).show();
@@ -191,7 +200,7 @@ public class UpdateAccount extends AppCompatActivity {
         @Override
         protected void onCancelled() {
             can_send_request = true;
-            Log.i(JLog.TAG, "Delete Account Request Cancelled");
+            Log.i(JLog.TAG, "Update Account Request Cancelled");
         }
     }
 

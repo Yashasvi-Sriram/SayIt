@@ -124,7 +124,8 @@ public class DeleteAccount extends AppCompatActivity {
                 }
 
                 // If delete account success remove stored name, handle, password
-                if (response.equals(Flags.ResponseType.SUCCESS)) {
+                if (response.equals(Flags.ResponseType.SUCCESS)
+                        || response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, null);
                     shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, null);
@@ -154,13 +155,13 @@ public class DeleteAccount extends AppCompatActivity {
             Intent to_log_in = new Intent(DeleteAccount.this, LogIn.class);
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    startActivity(to_log_in);
                     Toast.makeText(DeleteAccount.this, "De-activated successfully", Toast.LENGTH_LONG).show();
+                    startActivity(to_log_in);
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
-                    startActivity(to_log_in);
                     Toast.makeText(DeleteAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     Toast.makeText(DeleteAccount.this, "Log In to continue", Toast.LENGTH_SHORT).show();
+                    startActivity(to_log_in);
                     break;
                 default:
                     Toast.makeText(DeleteAccount.this, response, Toast.LENGTH_LONG).show();
