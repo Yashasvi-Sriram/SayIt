@@ -14,12 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.withjarvis.sayit.Activities.Account.DeleteAccount;
 import com.withjarvis.sayit.Activities.Account.LogIn;
 import com.withjarvis.sayit.Activities.Account.UpdateAccount;
+import com.withjarvis.sayit.Activities.Account.PeopleListAdapter;
 import com.withjarvis.sayit.JLog.JLog;
 import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;
@@ -36,6 +38,7 @@ public class People extends AppCompatActivity {
     RelativeLayout search_div;
     EditText search_text_input;
     Button submit;
+    ListView peopleListView;
 
     SharedPreferences shp;
 
@@ -54,6 +57,7 @@ public class People extends AppCompatActivity {
         this.search_div = (RelativeLayout) this.people.findViewById(R.id.search_div);
         this.search_text_input = (EditText) this.search_div.findViewById(R.id.search_text_input);
         this.submit = (Button) this.search_div.findViewById(R.id.submit);
+        this.peopleListView = (ListView) this.people.findViewById(R.id.peopleListView);
 
         /* Submit Listener */
         this.submit.setOnClickListener(new View.OnClickListener() {
@@ -202,12 +206,15 @@ public class People extends AppCompatActivity {
             }
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    Log.i(JLog.TAG, this.json_string_response);
+                    peopleListView.setAdapter(new PeopleListAdapter(People.this, this.json_string_response));
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(People.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(People.this, LogIn.class);
                     startActivity(to_log_in);
+                    break;
+                case Flags.ResponseType.INVALID_REGEX:
+                    Toast.makeText(People.this, "Invalid Search String", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     Toast.makeText(People.this, response, Toast.LENGTH_LONG).show();

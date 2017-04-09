@@ -23,7 +23,8 @@
         <activity android:name=".Activities.Account.SignUp" />
         <activity android:name=".Activities.Account.UpdateAccount" />
         <activity android:name=".Activities.Account.DeleteAccount" />
-        <activity android:name=".Activities.People"></activity>
+        <activity android:name=".Activities.People" />
+        <activity android:name=".Activities.Account.PeopleListAdapter"></activity>
     </application>
 
 </manifest>
