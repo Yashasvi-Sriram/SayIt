@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.withjarvis.sayit.Activities.People;
+import com.withjarvis.sayit.Activities.People.People;
 import com.withjarvis.sayit.JLog.JLog;
 import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;

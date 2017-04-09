@@ -1,4 +1,4 @@
-package com.withjarvis.sayit.Activities;
+package com.withjarvis.sayit.Activities.People;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.withjarvis.sayit.Activities.ChatWindow;
 import com.withjarvis.sayit.R;
 
 import org.json.JSONArray;

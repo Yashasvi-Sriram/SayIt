@@ -24,7 +24,7 @@
         <activity android:name=".Activities.Account.UpdateAccount" />
         <activity android:name=".Activities.Account.DeleteAccount" />
         <activity
-            android:name=".Activities.People"
+            android:name=".Activities.People.People"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.ChatWindow"

@@ -1,4 +1,4 @@
-package com.withjarvis.sayit.Activities;
+package com.withjarvis.sayit.Activities.People;
 
 import android.app.ProgressDialog;
 import android.content.Context;

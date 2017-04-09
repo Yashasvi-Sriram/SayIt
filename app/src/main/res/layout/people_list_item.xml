@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.withjarvis.sayit.Activities.PeopleListAdapter">
+    tools:context="com.withjarvis.sayit.Activities.People.PeopleListAdapter">
 
     <RelativeLayout
         android:id="@+id/people_list_layout"
