@@ -18,5 +18,10 @@ public class Flags {
         public static final String HANDLE_ALREADY_EXIST = "53";
         public static final String INVALID_CREDENTIALS = "54";
         public static final String INVALID_REGEX = "55";
+        public static final String INVALID_PK = "56";
+    }
+
+    public class Local {
+        public static final String NO_NEW_MESSAGES = "101";
     }
 }

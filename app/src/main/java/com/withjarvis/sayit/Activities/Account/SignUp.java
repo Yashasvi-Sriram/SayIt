@@ -193,6 +193,7 @@ public class SignUp extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
+            can_send_request = true;
             Log.i(JLog.TAG, "Sign Up Cancelled");
         }
     }

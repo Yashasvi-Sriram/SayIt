@@ -1,3 +1,7 @@
+FIX :
+===
+1. get handle and password in onCreate not in listener
+
 Note :
 ====
 1. Flag Classes must be identical for server and client

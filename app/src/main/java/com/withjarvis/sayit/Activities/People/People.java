@@ -67,7 +67,7 @@ public class People extends AppCompatActivity {
                 String regex_string = search_text_input.getText().toString();
 
                 if (can_send_request) {
-                    new FilterUsers().execute(
+                    new GetFilteredPeople().execute(
                             handle,
                             password,
                             regex_string
@@ -137,7 +137,7 @@ public class People extends AppCompatActivity {
      * Format Sent
      * query_type, handle, password, regex_string (blocks in that order)
      */
-    private class FilterUsers extends AsyncTask<String, String, String> {
+    private class GetFilteredPeople extends AsyncTask<String, String, String> {
 
         ProgressDialog progressDialog = new ProgressDialog(People.this);
         String json_string_response;
@@ -182,6 +182,15 @@ public class People extends AppCompatActivity {
                     return null;
                 }
 
+                if (response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
+                    SharedPreferences.Editor shEditor = shp.edit();
+                    shEditor.putString(Keys.SHARED_PREFERENCES.NAME, null);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, null);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, null);
+                    shEditor.commit();
+                }
+
+
                 // Receive all matched users
                 this.json_string_response = ss.receive();
 
@@ -224,7 +233,7 @@ public class People extends AppCompatActivity {
         @Override
         protected void onCancelled() {
             can_send_request = true;
-            Log.i(JLog.TAG, "Log In Cancelled");
+            Log.i(JLog.TAG, "Get Filtered People Cancelled");
         }
     }
 }
