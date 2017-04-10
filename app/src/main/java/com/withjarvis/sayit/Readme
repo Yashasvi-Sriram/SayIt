@@ -1,6 +1,7 @@
 FIX :
 ===
 1. get handle and password in onCreate not in listener
+2. handle broken pipe and eol cases robustly
 
 Note :
 ====

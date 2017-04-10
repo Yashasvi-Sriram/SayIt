@@ -180,19 +180,16 @@ public class People extends AppCompatActivity {
                 // EOL Exception (Server dies in middle)
                 if (response == null) {
                     return null;
-                }
-
-                if (response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
+                } else if (response.equals(Flags.ResponseType.SUCCESS)) {
+                    // Receive all matched users
+                    this.json_string_response = ss.receive();
+                } else if (response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, null);
                     shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, null);
                     shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, null);
                     shEditor.commit();
                 }
-
-
-                // Receive all matched users
-                this.json_string_response = ss.receive();
 
                 return response;
 

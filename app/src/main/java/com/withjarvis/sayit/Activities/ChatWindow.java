@@ -367,7 +367,7 @@ public class ChatWindow extends AppCompatActivity {
                     startActivity(to_log_in);
                     break;
                 case Flags.ResponseType.INVALID_PK:
-                    Toast.makeText(ChatWindow.this, "The user recipient has deactivated", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChatWindow.this, "Other user recipient has deactivated", Toast.LENGTH_LONG).show();
                     Intent to_people = new Intent(ChatWindow.this, People.class);
                     startActivity(to_people);
                     break;
@@ -425,17 +425,16 @@ public class ChatWindow extends AppCompatActivity {
 
                 // Receive Response
                 String response = ss.receive();
-                // All messages from the sent timestamp
-                this.response_messages = new JSONArray(ss.receive());
-                // Updating timestamp
-                latest_sync_timestamp = ss.receive();
 
                 // EOL Exception (Server dies in middle)
                 if (response == null) {
                     return null;
-                }
-
-                if (response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
+                } else if (response.equals(Flags.ResponseType.SUCCESS)) {
+                    // All messages from the sent timestamp
+                    this.response_messages = new JSONArray(ss.receive());
+                    // Updating timestamp
+                    latest_sync_timestamp = ss.receive();
+                } else if (response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, null);
                     shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, null);
@@ -472,6 +471,11 @@ public class ChatWindow extends AppCompatActivity {
                     Toast.makeText(ChatWindow.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(ChatWindow.this, LogIn.class);
                     startActivity(to_log_in);
+                    break;
+                case Flags.ResponseType.INVALID_PK:
+                    Toast.makeText(ChatWindow.this, "Other user recipient has deactivated", Toast.LENGTH_LONG).show();
+                    Intent to_people = new Intent(ChatWindow.this, People.class);
+                    startActivity(to_people);
                     break;
                 default:
                     Toast.makeText(ChatWindow.this, response, Toast.LENGTH_LONG).show();

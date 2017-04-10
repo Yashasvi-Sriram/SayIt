@@ -149,7 +149,7 @@ public class SignUp extends AppCompatActivity {
 
                 // If sign up success store new name, handle, password
                 // for automatic login next time user opens app
-                if (response.equals(Flags.ResponseType.SUCCESS)) {
+                else if (response.equals(Flags.ResponseType.SUCCESS)) {
                     SharedPreferences shp = getSharedPreferences(Keys.SHARED_PREFERENCES.FILE, Context.MODE_PRIVATE);
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, name);

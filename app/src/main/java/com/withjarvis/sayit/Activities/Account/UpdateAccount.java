@@ -144,9 +144,8 @@ public class UpdateAccount extends AppCompatActivity {
                 if (response == null) {
                     return null;
                 }
-
-                // If delete account success remove stored name, handle, password
-                if (response.equals(Flags.ResponseType.SUCCESS)) {
+                // If update account success store new name, handle, new password
+                else if (response.equals(Flags.ResponseType.SUCCESS)) {
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, new_name);
                     shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, handle);

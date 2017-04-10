@@ -122,9 +122,8 @@ public class DeleteAccount extends AppCompatActivity {
                 if (response == null) {
                     return null;
                 }
-
                 // If delete account success remove stored name, handle, password
-                if (response.equals(Flags.ResponseType.SUCCESS)
+                else if (response.equals(Flags.ResponseType.SUCCESS)
                         || response.equals(Flags.ResponseType.INVALID_CREDENTIALS)) {
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, null);

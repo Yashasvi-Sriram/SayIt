@@ -154,10 +154,9 @@ public class LogIn extends AppCompatActivity {
                 if (response == null) {
                     return null;
                 }
-
                 // If login success update stored name, handle, password
                 // as login can happen from stored credentials or input credentials
-                if (response.equals(Flags.ResponseType.SUCCESS)) {
+                else if (response.equals(Flags.ResponseType.SUCCESS)) {
                     String name = ss.receive();
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, name);
