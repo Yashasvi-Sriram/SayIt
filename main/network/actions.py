@@ -233,24 +233,42 @@ def filter_messages(socket_station):
             receiver = User.objects.get(pk=receiver_pk)
             # Both sender and receiver are verified
 
+            filtered_messages = []
+            filtered_messages_reverse = []
+
             # Get message with sender and receiver as sender or receiver
             # Ordered by time stamp
             if from_this_datetime == '':
-                filtered_messages = UTUMessage.objects.filter(
-                    Q(receiver_id=sender.pk) | Q(receiver_id=receiver.pk),
-                    Q(sender_id=sender.pk) | Q(sender_id=receiver.pk),
-                ).order_by('time_stamp')
+                if sender.pk == receiver.pk:
+                    filtered_messages = UTUMessage.objects.filter(
+                        sender_id=sender.pk,
+                        receiver_id=sender.pk,
+                    ).order_by('time_stamp')
+                else:
+                    filtered_messages = UTUMessage.objects.filter(
+                        Q(sender_id=sender.pk, receiver_id=receiver.pk) |
+                        Q(sender_id=receiver.pk, receiver_id=sender.pk),
+                    ).order_by('time_stamp')
             # Get message with sender and receiver as sender or receiver
             # Greater than given param datetime
             # Ordered by time stamp
             else:
-                filtered_messages = UTUMessage.objects.filter(
-                    Q(receiver_id=sender.pk) | Q(receiver_id=receiver.pk),
-                    Q(sender_id=sender.pk) | Q(sender_id=receiver.pk),
-                    time_stamp__gte=dt.strptime(from_this_datetime, Keys.DateTime.DEFAULT_FORMAT)
-                ).order_by('time_stamp')
+                if sender.pk == receiver.pk:
+                    filtered_messages = UTUMessage.objects.filter(
+                        sender_id=sender.pk,
+                        receiver_id=sender.pk,
+                        time_stamp__gte=dt.strptime(from_this_datetime, Keys.DateTime.DEFAULT_FORMAT)
+                    ).order_by('time_stamp')
+                else:
+
+                    filtered_messages = UTUMessage.objects.filter(
+                        Q(sender_id=sender.pk, receiver_id=receiver.pk) |
+                        Q(sender_id=receiver.pk, receiver_id=sender.pk),
+                        time_stamp__gte=dt.strptime(from_this_datetime, Keys.DateTime.DEFAULT_FORMAT)
+                    ).order_by('time_stamp')
 
             fm_list = []
+
             for filtered_message in filtered_messages:
                 fm_dict = {
                     Keys.JSON.PK: filtered_message.pk,
@@ -259,7 +277,16 @@ def filter_messages(socket_station):
                     Keys.JSON.CONTENT: filtered_message.content,
                     Keys.JSON.TIME_STAMP: filtered_message.time_stamp.strftime(Keys.DateTime.DEFAULT_FORMAT)
                 }
-                print fm_dict
+                fm_list.append(fm_dict)
+
+            for filtered_message in filtered_messages_reverse:
+                fm_dict = {
+                    Keys.JSON.PK: filtered_message.pk,
+                    Keys.JSON.SENDER_PK: filtered_message.sender_id,
+                    Keys.JSON.RECEIVER_PK: filtered_message.receiver_id,
+                    Keys.JSON.CONTENT: filtered_message.content,
+                    Keys.JSON.TIME_STAMP: filtered_message.time_stamp.strftime(Keys.DateTime.DEFAULT_FORMAT)
+                }
                 fm_list.append(fm_dict)
 
             print 'Messages filtered successfully asked by ', sender.pk, ' in chat with ', receiver.pk
