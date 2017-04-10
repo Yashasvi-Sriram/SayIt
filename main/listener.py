@@ -61,10 +61,12 @@ def start_talking(socket_station):
         actions.filter_people(socket_station)
 
     elif query_type == Flags.QueryType.NEW_MESSAGE:
-        pass
+        # Pass control to action
+        actions.new_message(socket_station)
 
     elif query_type == Flags.QueryType.FILTER_MESSAGES:
-        pass
+        # Pass control to action
+        actions.filter_messages(socket_station)
 
 
 # Setup a Server Socket

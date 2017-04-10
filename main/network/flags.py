@@ -18,6 +18,7 @@ class Flags:
         HANDLE_ALREADY_EXIST = '53'
         INVALID_CREDENTIALS = '54'
         INVALID_REGEX = '55'
+        INVALID_PK = '56'
 
         def __init__(self):
             pass
