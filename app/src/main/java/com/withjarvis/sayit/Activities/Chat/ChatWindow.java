@@ -1,4 +1,4 @@
-package com.withjarvis.sayit.Activities;
+package com.withjarvis.sayit.Activities.Chat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -70,9 +70,9 @@ public class ChatWindow extends AppCompatActivity {
 
         /* Gets meta data */
         Bundle pressed_list_item = getIntent().getExtras();
-        this.receiver_name = pressed_list_item.getString("name");
-        this.receiver_handle = pressed_list_item.getString("handle");
-        this.receiver_pk = pressed_list_item.getInt("pk");
+        this.receiver_name = pressed_list_item.getString(Starter.Keys.OTHER_PERSON_NAME);
+        this.receiver_handle = pressed_list_item.getString(Starter.Keys.OTHER_PERSON_HANDLE);
+        this.receiver_pk = pressed_list_item.getInt(Starter.Keys.OTHER_PERSON_PK);
 
         /* Getting Shared Preferences */
         this.shp = getSharedPreferences(Keys.SHARED_PREFERENCES.FILE, Context.MODE_PRIVATE);
@@ -353,6 +353,7 @@ public class ChatWindow extends AppCompatActivity {
                 Toast.makeText(ChatWindow.this, "Network Error", Toast.LENGTH_LONG).show();
                 return;
             }
+            Intent to_people = new Intent(ChatWindow.this, People.class);
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
                     new SyncMessages().execute(
@@ -368,7 +369,10 @@ public class ChatWindow extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_PK:
                     Toast.makeText(ChatWindow.this, "Other user recipient has deactivated", Toast.LENGTH_LONG).show();
-                    Intent to_people = new Intent(ChatWindow.this, People.class);
+                    startActivity(to_people);
+                    break;
+                case Flags.ResponseType.NOT_FRIENDS:
+                    Toast.makeText(ChatWindow.this, "You two are not friends", Toast.LENGTH_LONG).show();
                     startActivity(to_people);
                     break;
                 case Flags.Local.NO_NEW_MESSAGES:
@@ -462,6 +466,7 @@ public class ChatWindow extends AppCompatActivity {
                 Toast.makeText(ChatWindow.this, "Network Error", Toast.LENGTH_LONG).show();
                 return;
             }
+            Intent to_people = new Intent(ChatWindow.this, People.class);
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
                     Log.i(JLog.TAG, latest_sync_timestamp);
@@ -474,7 +479,10 @@ public class ChatWindow extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_PK:
                     Toast.makeText(ChatWindow.this, "Other user recipient has deactivated", Toast.LENGTH_LONG).show();
-                    Intent to_people = new Intent(ChatWindow.this, People.class);
+                    startActivity(to_people);
+                    break;
+                case Flags.ResponseType.NOT_FRIENDS:
+                    Toast.makeText(ChatWindow.this, "You two are not friends", Toast.LENGTH_LONG).show();
                     startActivity(to_people);
                     break;
                 default:

@@ -2,7 +2,11 @@ FIX :
 ===
 1. get handle and password in onCreate not in listener
 2. handle broken pipe and eol cases robustly
+3. when server dies while in chat window donot repeatedly give server connection refused
 
 Note :
 ====
-1. Flag Classes must be identical for server and client
+1. Flag Classes
+2. JSON keys classes
+3. FriendRequest.Status classes
+    must be identical for server and client

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friend_request"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.withjarvis.sayit.Activities.Chat.FriendRequest">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:gravity="center_horizontal"
+        android:padding="5sp"
+        android:text="Name"
+        android:textAllCaps="false"
+        android:textColor="#000"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:fontFamily="cursive"
+        android:gravity="center_horizontal"
+        android:padding="5sp"
+        android:text="Handle"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="10sp"
+        android:text="Status"
+        android:textSize="15sp"
+        android:layout_below="@id/handle"/>
+
+
+    <EditText
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/status"
+        android:layout_margin="5sp"
+        android:background="@drawable/fr_message_bg"
+        android:hint="Send a message to tell about you"
+        android:fontFamily="cursive"
+        android:padding="10sp"
+        android:textColor="#000" />
+
+    <RelativeLayout
+        android:id="@+id/action_div"
+        android:paddingBottom="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/place_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#009688"
+            android:text="Send Request"
+            android:textColor="#fff" />
+
+        <LinearLayout
+            android:id="@+id/response_div"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/reject_request"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#b71c1c"
+                android:text="Block"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/accept_request"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#009688"
+                android:text="Friend"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

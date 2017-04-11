@@ -10,6 +10,9 @@ public class Flags {
         public static final String FILTER_USERS = "5";
         public static final String NEW_MESSAGE = "6";
         public static final String FILTER_MESSAGES = "7";
+        public static final String PLACE_FRIEND_REQUEST = "8";
+        public static final String ANSWER_FRIEND_REQUEST = "9";
+        public static final String GET_STATUS_OF_FRIEND_REQUEST = "10";
     }
 
     public class ResponseType {
@@ -19,6 +22,16 @@ public class Flags {
         public static final String INVALID_CREDENTIALS = "54";
         public static final String INVALID_REGEX = "55";
         public static final String INVALID_PK = "56";
+        public static final String IDENTICAL_PKS = "57";
+        public class FriendRequest {
+
+            public static final String REQUEST_ALREADY_PLACED = "58";
+            public static final String NO_SUCH_FRIEND_REQUEST = "59";
+            public static final String REQUEST_ALREADY_ANSWERED = "60";
+        }
+
+        public static final String NOT_FRIENDS = "61";
+
     }
 
     public class Local {

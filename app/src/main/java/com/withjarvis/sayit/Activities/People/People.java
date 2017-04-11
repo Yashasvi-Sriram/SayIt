@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +30,10 @@ import com.withjarvis.sayit.Network.Flags;
 import com.withjarvis.sayit.Network.SocketStation;
 import com.withjarvis.sayit.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class People extends AppCompatActivity {
@@ -37,7 +43,9 @@ public class People extends AppCompatActivity {
     RelativeLayout search_div;
     EditText search_text_input;
     Button submit;
-    ListView people_list_view;
+    ListView others_list;
+    ListView friends_list;
+    BottomNavigationView friends_selector;
 
     SharedPreferences shp;
 
@@ -56,7 +64,29 @@ public class People extends AppCompatActivity {
         this.search_div = (RelativeLayout) this.people.findViewById(R.id.search_div);
         this.search_text_input = (EditText) this.search_div.findViewById(R.id.search_text_input);
         this.submit = (Button) this.search_div.findViewById(R.id.submit);
-        this.people_list_view = (ListView) this.people.findViewById(R.id.people_list_view);
+        this.others_list = (ListView) this.people.findViewById(R.id.others_list);
+        this.friends_list = (ListView) this.people.findViewById(R.id.friends_list);
+        this.friends_selector = (BottomNavigationView) this.people.findViewById(R.id.friends_selector);
+
+        /* Friends Selector Listener */
+        this.friends_selector.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.people_menu_show_friends:
+                                friends_list.setVisibility(View.VISIBLE);
+                                others_list.setVisibility(View.GONE);
+                                return true;
+                            case R.id.people_menu_show_others:
+                                others_list.setVisibility(View.VISIBLE);
+                                friends_list.setVisibility(View.GONE);
+                                return true;
+                        }
+                        return false;
+                    }
+                }
+        );
 
         /* Submit Listener */
         this.submit.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +241,22 @@ public class People extends AppCompatActivity {
             }
             switch (response) {
                 case Flags.ResponseType.SUCCESS:
-                    people_list_view.setAdapter(new PeopleListAdapter(People.this, this.json_string_response));
+                    try {
+                        JSONObject total_list = new JSONObject(this.json_string_response);
+                        JSONArray _friends_list = total_list.getJSONArray(com.withjarvis.sayit.Network.Keys.JSON.FRIENDS_LIST);
+                        JSONArray _others_list = total_list.getJSONArray(com.withjarvis.sayit.Network.Keys.JSON.OTHERS_LIST);
+
+                        // Indicate no match found else no way to understand that
+                        if (_friends_list.length() == 0 && _others_list.length() == 0) {
+                            Toast.makeText(People.this, "No match found", Toast.LENGTH_LONG).show();
+                        }
+
+                        friends_list.setAdapter(new FriendsListAdapter(People.this, _friends_list));
+                        others_list.setAdapter(new OthersListAdapter(People.this, _others_list));
+                    } catch (JSONException e) {
+                        Toast.makeText(People.this, "Invalid Response", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(People.this, "Invalid Credentials", Toast.LENGTH_LONG).show();

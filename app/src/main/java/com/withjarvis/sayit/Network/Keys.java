@@ -10,5 +10,9 @@ public class Keys {
         public static final String RECEIVER_PK = "receiver";
         public static final String CONTENT = "content";
         public static final String TIME_STAMP = "time_stamp";
+        public static final String FRIENDS_LIST = "friends_list";
+        public static final String OTHERS_LIST = "others_list";
+        public static final String MESSAGE = "message";
+        public static final String STATUS = "status";
     }
 }
