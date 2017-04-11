@@ -16,6 +16,12 @@ class Keys:
         CONTENT = 'content'
         TIME_STAMP = 'time_stamp'
 
+        FRIENDS_LIST = 'friends_list'
+        OTHERS_LIST = 'others_list'
+
+        MESSAGE = 'message'
+        STATUS = 'status'
+
         def __init__(self):
             pass
 

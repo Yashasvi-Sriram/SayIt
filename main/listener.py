@@ -68,6 +68,18 @@ def start_talking(socket_station):
         # Pass control to action
         actions.filter_messages(socket_station)
 
+    elif query_type == Flags.QueryType.PLACE_FRIEND_REQUEST:
+        # Pass control to action
+        actions.place_friend_request(socket_station)
+
+    elif query_type == Flags.QueryType.ANSWER_FRIEND_REQUEST:
+        # Pass control to action
+        actions.answer_friend_request(socket_station)
+
+    elif query_type == Flags.QueryType.GET_STATUS_OF_FRIEND_REQUEST:
+        # Pass control to action
+        actions.get_status_of_friend_request(socket_station)
+
 
 # Setup a Server Socket
 s = socket.socket()
