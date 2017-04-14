@@ -58,6 +58,8 @@ public class FriendRequest extends AppCompatActivity {
     /* Status */
 
     String fr_status = "";
+    boolean can_answer_or_change_fr = false;
+    boolean can_place_fr = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +114,7 @@ public class FriendRequest extends AppCompatActivity {
         this.accept_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fr_status.equals(Status.PENDING)) {
+                if (can_answer_or_change_fr) {
                     new AnswerFriendRequest().execute(
                             this_person_handle,
                             this_person_password,
@@ -125,7 +127,7 @@ public class FriendRequest extends AppCompatActivity {
         this.reject_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fr_status.equals(Status.PENDING)) {
+                if (can_answer_or_change_fr) {
                     new AnswerFriendRequest().execute(
                             this_person_handle,
                             this_person_password,
@@ -172,6 +174,10 @@ public class FriendRequest extends AppCompatActivity {
             this.progressDialog.setCanceledOnTouchOutside(false);
             this.progressDialog.setIndeterminate(true);
             this.progressDialog.show();
+
+            // Resetting the decision booleans
+            can_answer_or_change_fr = false;
+            can_place_fr = false;
         }
 
         /**
@@ -238,35 +244,75 @@ public class FriendRequest extends AppCompatActivity {
                         int receiver_pk = fr_response.getInt(com.withjarvis.sayit.Network.Keys.JSON.RECEIVER_PK);
                         String _message = fr_response.getString(com.withjarvis.sayit.Network.Keys.JSON.MESSAGE);
 
-                        if (fr_status.equals(FriendRequest.Status.PENDING)) {
-                            if (other_person_pk == receiver_pk) {
-                                // this client sent fr to other client
-                                response_div.setVisibility(View.GONE);
-                                place_request.setVisibility(View.GONE);
-                                message.setText(_message);
-                                message.setEnabled(false);
-                                status.setText("Sent");
-                            } else if (other_person_pk == sender_pk) {
-                                // this client got fr from other client
-                                response_div.setVisibility(View.VISIBLE);
-                                place_request.setVisibility(View.GONE);
-                                message.setText(_message);
-                                message.setEnabled(false);
-                                status.setText("Received");
+                        if (other_person_pk == receiver_pk) {
+                            // This client sent fr to other client
+                            switch (fr_status) {
+                                case FriendRequest.Status.PENDING:
+                                    // Friend request is sent and response pending
+                                    response_div.setVisibility(View.GONE);
+                                    place_request.setVisibility(View.GONE);
+                                    message.setText(_message);
+                                    message.setEnabled(false);
+                                    status.setText("Sent");
+                                    can_answer_or_change_fr = false;
+                                    break;
+                                case FriendRequest.Status.ACCEPTED:
+                                    response_div.setVisibility(View.GONE);
+                                    place_request.setVisibility(View.GONE);
+
+                                    message.setText(_message);
+                                    message.setEnabled(false);
+                                    status.setText("Sent and Accepted");
+                                    // Friend request is sent and accepted
+                                    can_answer_or_change_fr = false;
+                                    break;
+                                case FriendRequest.Status.REJECTED:
+                                    response_div.setVisibility(View.GONE);
+                                    place_request.setVisibility(View.GONE);
+
+                                    message.setText(_message);
+                                    message.setEnabled(false);
+                                    status.setText("Sent and Blocked");
+                                    // Friend request is sent and rejected
+                                    can_answer_or_change_fr = false;
+                                    break;
                             }
-                        } else if (fr_status.equals(FriendRequest.Status.ACCEPTED)) {
-                            response_div.setVisibility(View.GONE);
-                            place_request.setVisibility(View.GONE);
-                            message.setText(_message);
-                            message.setEnabled(false);
-                            status.setText("Accepted");
-                        } else if (fr_status.equals(FriendRequest.Status.REJECTED)) {
-                            response_div.setVisibility(View.GONE);
-                            place_request.setVisibility(View.GONE);
-                            message.setText(_message);
-                            message.setEnabled(false);
-                            status.setText("Blocked");
+                        } else if (other_person_pk == sender_pk) {
+                            // This client got fr from other client
+                            switch (fr_status) {
+                                case FriendRequest.Status.PENDING:
+                                    // Friend request is received and pending
+                                    response_div.setVisibility(View.VISIBLE);
+                                    place_request.setVisibility(View.GONE);
+
+                                    message.setText(_message);
+                                    message.setEnabled(false);
+                                    status.setText("Received");
+                                    can_answer_or_change_fr = true;
+                                    break;
+                                case FriendRequest.Status.ACCEPTED:
+                                    // Friend request is received and accepted
+                                    response_div.setVisibility(View.VISIBLE);
+                                    place_request.setVisibility(View.GONE);
+
+                                    message.setText(_message);
+                                    message.setEnabled(false);
+                                    status.setText("Received and Accepted");
+                                    can_answer_or_change_fr = true;
+                                    break;
+                                case FriendRequest.Status.REJECTED:
+                                    // Friend request is received and rejected
+                                    response_div.setVisibility(View.VISIBLE);
+                                    place_request.setVisibility(View.GONE);
+
+                                    message.setText(_message);
+                                    message.setEnabled(false);
+                                    status.setText("Received and Blocked");
+                                    can_answer_or_change_fr = true;
+                                    break;
+                            }
                         }
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -277,6 +323,9 @@ public class FriendRequest extends AppCompatActivity {
                     response_div.setVisibility(View.GONE);
                     place_request.setVisibility(View.VISIBLE);
                     status.setText("Available");
+                    // As no previous friend request is there from this person to the other person
+                    // or vice versa, a friend request can be placed
+                    can_answer_or_change_fr = true;
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(FriendRequest.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
@@ -517,10 +566,6 @@ public class FriendRequest extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_PK:
                     Toast.makeText(FriendRequest.this, "No such user", Toast.LENGTH_LONG).show();
-                    startActivity(to_people);
-                    break;
-                case Flags.ResponseType.FriendRequest.REQUEST_ALREADY_ANSWERED:
-                    Toast.makeText(FriendRequest.this, "Request already answered", Toast.LENGTH_LONG).show();
                     startActivity(to_people);
                     break;
                 case Flags.ResponseType.IDENTICAL_PKS:

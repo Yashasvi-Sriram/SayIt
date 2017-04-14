@@ -5,12 +5,12 @@
 
         <item
             android:id="@+id/people_menu_show_friends"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_supervisor_account_black_24dp"
             android:title="Friends" />
 
         <item
             android:id="@+id/people_menu_show_others"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_person_add_black_24dp"
             android:title="Others" />
 
     </group>

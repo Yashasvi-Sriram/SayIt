@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.withjarvis.sayit.Activities.People.FriendsListAdapter">
+
+    <RelativeLayout
+        android:id="@+id/people_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20sp">
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:text="Name"/>
+
+        <TextView
+            android:id="@+id/handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:textSize="25sp"
+            android:layout_below="@id/name"
+            android:textColor="@color/colorAccent"
+            android:text="Handle"/>
+
+        <TextView
+            android:layout_width="48sp"
+            android:layout_height="48sp"
+            android:background="@drawable/ic_add_black_24dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

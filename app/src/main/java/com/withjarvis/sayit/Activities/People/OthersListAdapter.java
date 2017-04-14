@@ -35,7 +35,7 @@ public class OthersListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View rowView = inflater.inflate(R.layout.people_list_item, null);
+        View rowView = inflater.inflate(R.layout.others_list_item, null);
 
         Holder holder = new Holder(rowView);
         holder.setText(position);

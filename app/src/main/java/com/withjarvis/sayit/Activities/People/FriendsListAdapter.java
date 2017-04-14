@@ -35,7 +35,7 @@ public class FriendsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View rowView = inflater.inflate(R.layout.people_list_item, null);
+        View rowView = inflater.inflate(R.layout.friends_list_item, null);
 
         Holder holder = new Holder(rowView);
         holder.setText(position);
@@ -59,6 +59,28 @@ public class FriendsListAdapter extends BaseAdapter {
                 }
             }
         });
+
+        /* To Friend Request */
+        rowView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                try {
+                    JSONObject user = (JSONObject) users.get(position);
+
+                    Starter.startFriendRequest(
+                            user.getString(Keys.JSON.NAME),
+                            user.getString(Keys.JSON.HANDLE),
+                            user.getInt(Keys.JSON.PK),
+                            context
+                    );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        });
+
         return rowView;
     }
 

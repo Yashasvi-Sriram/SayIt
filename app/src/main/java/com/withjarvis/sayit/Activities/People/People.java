@@ -43,8 +43,10 @@ public class People extends AppCompatActivity {
     RelativeLayout search_div;
     EditText search_text_input;
     Button submit;
-    ListView others_list;
+    RelativeLayout friends_list_div;
     ListView friends_list;
+    RelativeLayout others_list_div;
+    ListView others_list;
     BottomNavigationView friends_selector;
 
     SharedPreferences shp;
@@ -64,8 +66,10 @@ public class People extends AppCompatActivity {
         this.search_div = (RelativeLayout) this.people.findViewById(R.id.search_div);
         this.search_text_input = (EditText) this.search_div.findViewById(R.id.search_text_input);
         this.submit = (Button) this.search_div.findViewById(R.id.submit);
-        this.others_list = (ListView) this.people.findViewById(R.id.others_list);
-        this.friends_list = (ListView) this.people.findViewById(R.id.friends_list);
+        this.friends_list_div = (RelativeLayout) this.people.findViewById(R.id.friends_list_div);
+        this.friends_list = (ListView) this.friends_list_div.findViewById(R.id.friends_list);
+        this.others_list_div = (RelativeLayout) this.people.findViewById(R.id.others_list_div);
+        this.others_list = (ListView) this.others_list_div.findViewById(R.id.others_list);
         this.friends_selector = (BottomNavigationView) this.people.findViewById(R.id.friends_selector);
 
         /* Friends Selector Listener */
@@ -75,12 +79,12 @@ public class People extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.people_menu_show_friends:
-                                friends_list.setVisibility(View.VISIBLE);
-                                others_list.setVisibility(View.GONE);
+                                friends_list_div.setVisibility(View.VISIBLE);
+                                others_list_div.setVisibility(View.GONE);
                                 return true;
                             case R.id.people_menu_show_others:
-                                others_list.setVisibility(View.VISIBLE);
-                                friends_list.setVisibility(View.GONE);
+                                others_list_div.setVisibility(View.VISIBLE);
+                                friends_list_div.setVisibility(View.GONE);
                                 return true;
                         }
                         return false;

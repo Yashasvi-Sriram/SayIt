@@ -16,10 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/colorAccent"
+            android:textColor="#FFF"
+            android:background="@drawable/top_right_btn_bg"
             android:fontFamily="monospace"
-            android:text="Log In?"/>
+            android:text="Log In ?"/>
 
         <LinearLayout
             android:id="@+id/credentials_div"
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif-monospace"
-                android:text="Hi"
+                android:text="Hi!"
                 android:textSize="60sp" />
 
             <EditText
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="serif-monospace"
+                android:fontFamily="monospace"
                 android:hint="Sign Up" />
 
         </LinearLayout>

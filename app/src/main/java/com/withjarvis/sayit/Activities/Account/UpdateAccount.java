@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.withjarvis.sayit.Activities.People.People;
@@ -30,6 +31,7 @@ public class UpdateAccount extends AppCompatActivity {
     /* Views */
     RelativeLayout update_account;
     LinearLayout credentials_div;
+    TextView handle;
     EditText old_password_input;
     EditText new_name_input;
     EditText new_password_input;
@@ -48,6 +50,7 @@ public class UpdateAccount extends AppCompatActivity {
         /* Getting Views */
         this.update_account = (RelativeLayout) findViewById(R.id.update_account);
         this.credentials_div = (LinearLayout) this.update_account.findViewById(R.id.credentials_div);
+        this.handle = (TextView) this.credentials_div.findViewById(R.id.handle);
         this.old_password_input = (EditText) this.credentials_div.findViewById(R.id.old_password_input);
         this.new_name_input = (EditText) this.credentials_div.findViewById(R.id.new_name_input);
         this.new_password_input = (EditText) this.credentials_div.findViewById(R.id.new_password_input);
@@ -57,11 +60,12 @@ public class UpdateAccount extends AppCompatActivity {
         /* Getting previously stored information */
         this.shp = getSharedPreferences(Keys.SHARED_PREFERENCES.FILE, Context.MODE_PRIVATE);
 
-        String name = this.shp.getString(Keys.SHARED_PREFERENCES.NAME, null);
-        String handle = this.shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
+        String _name = this.shp.getString(Keys.SHARED_PREFERENCES.NAME, null);
+        String _handle = this.shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
 
         /* Auto fill */
-        this.new_name_input.setText(name);
+        this.handle.setText("@" + _handle);
+        this.new_name_input.setText(_name);
 
         /* Submit Listener */
         this.submit.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +79,11 @@ public class UpdateAccount extends AppCompatActivity {
 
                 if (!new_password.equals(confirm_password)) {
                     Toast.makeText(UpdateAccount.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (new_name.equals("") || new_password.equals("") || old_password.equals("")) {
+                    Toast.makeText(UpdateAccount.this, "Empty Inputs not allowed", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -187,7 +196,7 @@ public class UpdateAccount extends AppCompatActivity {
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(UpdateAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     Toast.makeText(UpdateAccount.this, "Log In to continue", Toast.LENGTH_SHORT).show();
-                    Intent to_log_in = new Intent(UpdateAccount.this, People.class);
+                    Intent to_log_in = new Intent(UpdateAccount.this, LogIn.class);
                     startActivity(to_log_in);
                     break;
                 default:

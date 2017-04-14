@@ -29,11 +29,21 @@
                 android:text="My Account"
                 android:textSize="40sp" />
 
+            <TextView
+                android:id="@+id/handle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif-monospace"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorAccent"
+                android:text="\@handle"
+                android:textSize="20sp" />
+
             <EditText
                 android:id="@+id/old_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="serif-monospace"
                 android:hint="Password"
                 android:inputType="textPassword" />
@@ -78,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="serif-monospace"
+                android:fontFamily="monospace"
                 android:hint="Update" />
 
         </LinearLayout>
