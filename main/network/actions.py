@@ -386,11 +386,33 @@ def answer_friend_request(socket_station):
                             sender.friends.add(receiver)
                             receiver.friends.add(sender)
                         fr.save()
+                        
                         print 'Friend request ', answer, '  by ', receiver.pk, ' to ', sender.pk
                         socket_station.send(Flags.ResponseType.SUCCESS)
-                    elif fr.status == FriendRequest.Status.REJECTED \
-                            or fr.status == FriendRequest.Status.ACCEPTED:
-                        socket_station.send(Flags.ResponseType.FriendRequest.REQUEST_ALREADY_ANSWERED)
+                    elif fr.status == FriendRequest.Status.REJECTED:
+                        # Changed status to friends
+                        if answer == FriendRequest.Status.ACCEPTED:
+                            # Storing answer
+                            fr.status = answer
+                            # Making friends
+                            sender.friends.add(receiver)
+                            receiver.friends.add(sender)
+                            fr.save()
+
+                        print 'Friend request ', answer, '  by ', receiver.pk, ' to ', sender.pk
+                        socket_station.send(Flags.ResponseType.SUCCESS)
+                    elif fr.status == FriendRequest.Status.ACCEPTED:
+                        # Changed status to blocked
+                        if answer == FriendRequest.Status.REJECTED:
+                            # Storing answer
+                            fr.status = answer
+                            # Blocking the friendship edge
+                            sender.friends.remove(receiver)
+                            receiver.friends.remove(sender)
+                            fr.save()
+
+                        print 'Friend request ', answer, '  by ', receiver.pk, ' to ', sender.pk
+                        socket_station.send(Flags.ResponseType.SUCCESS)
 
                 except ObjectDoesNotExist:
                     # No friend request already placed
