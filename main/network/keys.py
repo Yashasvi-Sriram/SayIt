@@ -22,6 +22,8 @@ class Keys:
         MESSAGE = 'message'
         STATUS = 'status'
 
+        ACTIVE_STATUS = 'active_status'
+
         def __init__(self):
             pass
 

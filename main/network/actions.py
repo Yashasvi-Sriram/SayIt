@@ -197,6 +197,25 @@ def filter_people(socket_station):
             }
             try:
                 user.friends.get(pk=filtered_user.pk)
+                if filtered_user.last_active == '':
+                    active_status = 'active now'
+                else:
+                    last_active_time = dt.strptime(filtered_user.last_active, Keys.DateTime.DEFAULT_FORMAT)
+                    present = dt.now()
+                    diff = present - last_active_time
+                    if diff.days > 0:
+                        active_status = 'active ' + str(diff.days) + 'd' + ' ago'
+                    elif diff.seconds > 0:
+                        if diff.seconds >= 3600:
+                            active_status = 'active ' + str(diff.seconds/3600) + 'h' + ' ago'
+                        elif diff.seconds >= 60:
+                            active_status = 'active ' + str(diff.seconds/60) + 'm' + ' ago'
+                        else:
+                            active_status = 'active few seconds ago'
+                    else:
+                        active_status = 'active few seconds ago'
+
+                filtered_user_dict[Keys.JSON.ACTIVE_STATUS] = active_status
                 friends_list.append(filtered_user_dict)
             except ObjectDoesNotExist:
                 others_list.append(filtered_user_dict)
