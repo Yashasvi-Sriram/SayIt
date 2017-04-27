@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.withjarvis.sayit.Activities.Account.DeleteAccount;
 import com.withjarvis.sayit.Activities.Account.LogIn;
+import com.withjarvis.sayit.Activities.Account.LogOut;
 import com.withjarvis.sayit.Activities.Account.UpdateAccount;
 import com.withjarvis.sayit.JLog.JLog;
 import com.withjarvis.sayit.Keys;
@@ -50,6 +51,8 @@ public class People extends AppCompatActivity {
     BottomNavigationView friends_selector;
 
     SharedPreferences shp;
+    String handle;
+    String password;
 
     boolean can_send_request = true;
 
@@ -60,6 +63,8 @@ public class People extends AppCompatActivity {
 
         /* Getting shared preferences */
         this.shp = getSharedPreferences(Keys.SHARED_PREFERENCES.FILE, Context.MODE_PRIVATE);
+        this.handle = shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
+        this.password = shp.getString(Keys.SHARED_PREFERENCES.PASSWORD, null);
 
         /* Getting Views */
         this.people = (RelativeLayout) findViewById(R.id.people);
@@ -96,8 +101,6 @@ public class People extends AppCompatActivity {
         this.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String handle = shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
-                String password = shp.getString(Keys.SHARED_PREFERENCES.PASSWORD, null);
                 String regex_string = search_text_input.getText().toString();
 
                 if (can_send_request) {
@@ -148,6 +151,8 @@ public class People extends AppCompatActivity {
         shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, null);
         shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, null);
         shEditor.apply();
+
+        new LogOut(this, this.handle, this.password);
 
         Intent to_log_in = new Intent(this, LogIn.class);
         startActivity(to_log_in);

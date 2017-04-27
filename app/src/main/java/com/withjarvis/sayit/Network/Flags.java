@@ -13,6 +13,7 @@ public class Flags {
         public static final String PLACE_FRIEND_REQUEST = "8";
         public static final String ANSWER_FRIEND_REQUEST = "9";
         public static final String GET_STATUS_OF_FRIEND_REQUEST = "10";
+        public static final String LOG_OUT = "11";
     }
 
     public class ResponseType {
