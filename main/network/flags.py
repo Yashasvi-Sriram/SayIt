@@ -12,6 +12,7 @@ class Flags:
         PLACE_FRIEND_REQUEST = '8'
         ANSWER_FRIEND_REQUEST = '9'
         GET_STATUS_OF_FRIEND_REQUEST = '10'
+        LOG_OUT = '11'
 
         def __init__(self):
             pass

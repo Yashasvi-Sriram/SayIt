@@ -1,6 +1,6 @@
 class Config:
-    IP = "192.168.0.9"
-    PORT = 8037
+    IP = "192.168.0.3"
+    PORT = 8036
 
     def __init__(self):
         pass

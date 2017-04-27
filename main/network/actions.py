@@ -61,7 +61,7 @@ def sign_up(socket_station):
         socket_station.send(Flags.ResponseType.HANDLE_ALREADY_EXIST)
 
     except ObjectDoesNotExist:
-        new_user = User(name=name, handle=handle, password=password)
+        new_user = User(name=name, handle=handle, password=password, last_active="")
         new_user.save()
         # Every user is a friend of himself
         new_user.friends.add(new_user)
@@ -84,6 +84,8 @@ def log_in(socket_station):
     try:
         user = User.objects.get(handle=handle, password=password)
         print 'Login successful for handle : ', handle
+        user.last_active = ""
+        user.save()
         socket_station.send(Flags.ResponseType.SUCCESS)
         socket_station.send(user.name)
     except ObjectDoesNotExist:
@@ -134,6 +136,29 @@ def delete_account(socket_station):
         socket_station.send(Flags.ResponseType.SUCCESS)
     except ObjectDoesNotExist:
         print 'Delete account failed for handle : ', handle
+        socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
+
+
+def log_out(socket_station):
+    """
+        :param socket_station: SocketStation instance
+
+        1. (done)
+        2. See whether such a user exists
+        3. Expected Format handle, password (blocks in that order)
+        4. If every thing okay send success, name
+            Else if no user send invalid_credentials
+        """
+    handle = socket_station.receive()
+    password = socket_station.receive()
+    try:
+        user = User.objects.get(handle=handle, password=password)
+        user.last_active = dt.now().strftime(Keys.DateTime.DEFAULT_FORMAT)
+        user.save()
+        print 'Logout successful for handle : ', handle
+        socket_station.send(Flags.ResponseType.SUCCESS)
+    except ObjectDoesNotExist:
+        print 'Logout failed for handle : ', handle
         socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
 
 

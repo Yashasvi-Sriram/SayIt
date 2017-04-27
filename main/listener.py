@@ -80,6 +80,11 @@ def start_talking(socket_station):
         # Pass control to action
         actions.get_status_of_friend_request(socket_station)
 
+    elif query_type == Flags.QueryType.LOG_OUT:
+        # Pass control to action
+        actions.log_out(socket_station)
+
+
 
 # Setup a Server Socket
 s = socket.socket()
