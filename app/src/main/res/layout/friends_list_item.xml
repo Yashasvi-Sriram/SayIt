@@ -7,7 +7,7 @@
     tools:context="com.withjarvis.sayit.Activities.People.FriendsListAdapter">
 
     <RelativeLayout
-        android:id="@+id/people_list_item_layout"
+        android:id="@+id/friends_list_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20sp">
@@ -32,6 +32,14 @@
             android:textColor="@color/colorAccent"
             android:text="Handle"/>
 
+        <TextView
+            android:id="@+id/active_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="active"/>
 
     </RelativeLayout>
 

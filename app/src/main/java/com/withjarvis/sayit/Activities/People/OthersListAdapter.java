@@ -63,13 +63,13 @@ public class OthersListAdapter extends BaseAdapter {
     }
 
     private class Holder {
-        RelativeLayout people_list_item_layout;
+        RelativeLayout others_list_item_layout;
         TextView name, handle;
 
         public Holder(View rowView) {
-            this.people_list_item_layout = (RelativeLayout) rowView.findViewById(R.id.people_list_item_layout);
-            this.name = (TextView) this.people_list_item_layout.findViewById(R.id.name);
-            this.handle = (TextView) this.people_list_item_layout.findViewById(R.id.handle);
+            this.others_list_item_layout = (RelativeLayout) rowView.findViewById(R.id.others_list_item_layout);
+            this.name = (TextView) this.others_list_item_layout.findViewById(R.id.name);
+            this.handle = (TextView) this.others_list_item_layout.findViewById(R.id.handle);
         }
 
         public void setText(final int position) {

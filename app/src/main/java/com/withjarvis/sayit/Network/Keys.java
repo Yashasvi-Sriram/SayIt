@@ -14,5 +14,6 @@ public class Keys {
         public static final String OTHERS_LIST = "others_list";
         public static final String MESSAGE = "message";
         public static final String STATUS = "status";
+        public static final String ACTIVE_STATUS = "active_status";
     }
 }

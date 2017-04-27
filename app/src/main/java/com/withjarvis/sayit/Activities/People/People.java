@@ -51,8 +51,10 @@ public class People extends AppCompatActivity {
     BottomNavigationView friends_selector;
 
     SharedPreferences shp;
-    String handle;
-    String password;
+
+    String this_person_name;
+    String this_person_handle;
+    String this_person_password;
 
     boolean can_send_request = true;
 
@@ -63,8 +65,10 @@ public class People extends AppCompatActivity {
 
         /* Getting shared preferences */
         this.shp = getSharedPreferences(Keys.SHARED_PREFERENCES.FILE, Context.MODE_PRIVATE);
-        this.handle = shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
-        this.password = shp.getString(Keys.SHARED_PREFERENCES.PASSWORD, null);
+
+        this.this_person_name = shp.getString(Keys.SHARED_PREFERENCES.NAME, null);
+        this.this_person_handle = shp.getString(Keys.SHARED_PREFERENCES.HANDLE, null);
+        this.this_person_password = shp.getString(Keys.SHARED_PREFERENCES.PASSWORD, null);
 
         /* Getting Views */
         this.people = (RelativeLayout) findViewById(R.id.people);
@@ -105,13 +109,22 @@ public class People extends AppCompatActivity {
 
                 if (can_send_request) {
                     new GetFilteredPeople().execute(
-                            handle,
-                            password,
+                            this_person_handle,
+                            this_person_password,
                             regex_string
                     );
                 }
             }
         });
+
+        /* Initialize with empty string regex */
+        if (can_send_request) {
+            new GetFilteredPeople().execute(
+                    this_person_handle,
+                    this_person_password,
+                    ""
+            );
+        }
     }
 
     @Override
@@ -152,7 +165,7 @@ public class People extends AppCompatActivity {
         shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, null);
         shEditor.apply();
 
-        new LogOut(this, this.handle, this.password);
+        new LogOut(this, this.this_person_handle, this.this_person_password);
 
         Intent to_log_in = new Intent(this, LogIn.class);
         startActivity(to_log_in);

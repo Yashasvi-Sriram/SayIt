@@ -85,21 +85,24 @@ public class FriendsListAdapter extends BaseAdapter {
     }
 
     private class Holder {
-        RelativeLayout people_list_item_layout;
-        TextView name, handle;
+        RelativeLayout friends_list_item_layout;
+        TextView name, handle, active_status;
 
         public Holder(View rowView) {
-            this.people_list_item_layout = (RelativeLayout) rowView.findViewById(R.id.people_list_item_layout);
-            this.name = (TextView) this.people_list_item_layout.findViewById(R.id.name);
-            this.handle = (TextView) this.people_list_item_layout.findViewById(R.id.handle);
+            this.friends_list_item_layout = (RelativeLayout) rowView.findViewById(R.id.friends_list_item_layout);
+            this.name = (TextView) this.friends_list_item_layout.findViewById(R.id.name);
+            this.handle = (TextView) this.friends_list_item_layout.findViewById(R.id.handle);
+            this.active_status = (TextView) this.friends_list_item_layout.findViewById(R.id.active_status);
         }
 
         public void setText(final int position) {
             try {
                 JSONObject user = (JSONObject) users.get(position);
 
-                this.name.setText(user.getString(com.withjarvis.sayit.Network.Keys.JSON.NAME));
-                this.handle.setText("@" + user.getString(com.withjarvis.sayit.Network.Keys.JSON.HANDLE));
+                this.name.setText(user.getString(Keys.JSON.NAME));
+                this.handle.setText("@" + user.getString(Keys.JSON.HANDLE));
+                this.active_status.setText(user.getString(Keys.JSON.ACTIVE_STATUS));
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
