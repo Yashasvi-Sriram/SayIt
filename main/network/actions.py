@@ -7,6 +7,7 @@ from main.network.flags import Flags
 from .keys import Keys
 from datetime import datetime as dt, timedelta as td
 import re
+from suggestions import give_suggestions
 
 """
 Protocol (as seen by server)
@@ -165,8 +166,9 @@ def filter_people(socket_station):
     handle = socket_station.receive()
     password = socket_station.receive()
     regex_string = socket_station.receive()
+    pattern = None
     try:
-        re.compile(regex_string)
+        pattern = re.compile('.*' + regex_string)
     except re.error:
         print 'Filter people failed invalid regex : ', regex_string
         socket_station.send(Flags.ResponseType.INVALID_REGEX)
@@ -174,41 +176,51 @@ def filter_people(socket_station):
 
     try:
         user = User.objects.get(handle=handle, password=password)
-        filtered_users = User.objects.filter(name__iregex=regex_string)
 
         total_list = {}
         friends_list = []
         others_list = []
-        for filtered_user in filtered_users:
-            filtered_user_dict = {
-                Keys.JSON.PK: filtered_user.pk,
-                Keys.JSON.NAME: filtered_user.name,
-                Keys.JSON.HANDLE: filtered_user.handle
-            }
-            try:
-                user.friends.get(pk=filtered_user.pk)
-                if filtered_user.last_active == '':
+
+        suggested_users = give_suggestions(user.pk, User.objects.all())
+        sorted_friends = suggested_users[0]
+        sorted_others = suggested_users[1]
+
+        for friend in sorted_friends:
+            if pattern.match(friend.name) is not None:
+                friend_dict = {
+                    Keys.JSON.PK: friend.pk,
+                    Keys.JSON.NAME: friend.name,
+                    Keys.JSON.HANDLE: friend.handle
+                }
+                if friend.last_active == '':
                     active_status = 'active now'
                 else:
-                    last_active_time = dt.strptime(filtered_user.last_active, Keys.DateTime.DEFAULT_FORMAT)
+                    last_active_time = dt.strptime(friend.last_active, Keys.DateTime.DEFAULT_FORMAT)
                     present = dt.now()
                     diff = present - last_active_time
                     if diff.days > 0:
                         active_status = 'active ' + str(diff.days) + 'd' + ' ago'
                     elif diff.seconds > 0:
                         if diff.seconds >= 3600:
-                            active_status = 'active ' + str(diff.seconds/3600) + 'h' + ' ago'
+                            active_status = 'active ' + str(diff.seconds / 3600) + 'h' + ' ago'
                         elif diff.seconds >= 60:
-                            active_status = 'active ' + str(diff.seconds/60) + 'm' + ' ago'
+                            active_status = 'active ' + str(diff.seconds / 60) + 'm' + ' ago'
                         else:
                             active_status = 'active few seconds ago'
                     else:
                         active_status = 'active few seconds ago'
 
-                filtered_user_dict[Keys.JSON.ACTIVE_STATUS] = active_status
-                friends_list.append(filtered_user_dict)
-            except ObjectDoesNotExist:
-                others_list.append(filtered_user_dict)
+                friend_dict[Keys.JSON.ACTIVE_STATUS] = active_status
+                friends_list.append(friend_dict)
+
+        for stranger in sorted_others:
+            if pattern.match(stranger.name) is not None:
+                stranger_dict = {
+                    Keys.JSON.PK: stranger.pk,
+                    Keys.JSON.NAME: stranger.name,
+                    Keys.JSON.HANDLE: stranger.handle
+                }
+                others_list.append(stranger_dict)
 
         total_list[Keys.JSON.FRIENDS_LIST] = friends_list
         total_list[Keys.JSON.OTHERS_LIST] = others_list
@@ -421,7 +433,7 @@ def answer_friend_request(socket_station):
                             sender.friends.add(receiver)
                             receiver.friends.add(sender)
                         fr.save()
-                        
+
                         print 'Friend request ', answer, '  by ', receiver.pk, ' to ', sender.pk
                         socket_station.send(Flags.ResponseType.SUCCESS)
                     elif fr.status == FriendRequest.Status.REJECTED:

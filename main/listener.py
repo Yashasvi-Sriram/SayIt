@@ -85,7 +85,6 @@ def start_talking(socket_station):
         actions.log_out(socket_station)
 
 
-
 # Setup a Server Socket
 s = socket.socket()
 # Reuse the address after closing
