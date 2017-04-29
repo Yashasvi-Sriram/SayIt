@@ -5,7 +5,7 @@ from django.db.models import Q
 from main.models import User, UserToUserMessage as UTUMessage, FriendRequest
 from main.network.flags import Flags
 from .keys import Keys
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta as td
 import re
 
 """
@@ -146,6 +146,7 @@ def log_out(socket_station):
         user.save()
         print 'Logout successful for handle : ', handle
         socket_station.send(Flags.ResponseType.SUCCESS)
+
     except ObjectDoesNotExist:
         print 'Logout failed for handle : ', handle
         socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
@@ -319,12 +320,13 @@ def filter_messages(socket_station):
                 fm_list = []
 
                 for filtered_message in filtered_messages:
+                    corrected_time_stamp = filtered_message.time_stamp + td(seconds=19800)
                     fm_dict = {
                         Keys.JSON.PK: filtered_message.pk,
                         Keys.JSON.SENDER_PK: filtered_message.sender_id,
                         Keys.JSON.RECEIVER_PK: filtered_message.receiver_id,
                         Keys.JSON.CONTENT: filtered_message.content,
-                        Keys.JSON.TIME_STAMP: filtered_message.time_stamp.strftime(Keys.DateTime.READABLE_FORMAT)
+                        Keys.JSON.TIME_STAMP: corrected_time_stamp.strftime(Keys.DateTime.READABLE_FORMAT)
                     }
                     fm_list.append(fm_dict)
 
