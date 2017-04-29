@@ -185,6 +185,9 @@ public class SignUp extends AppCompatActivity {
                 case Flags.ResponseType.HANDLE_ALREADY_EXIST:
                     Toast.makeText(SignUp.this, "Handle Already Exists", Toast.LENGTH_LONG).show();
                     break;
+                case Flags.ResponseType.INVALID_NAME_SPACE:
+                    Toast.makeText(SignUp.this, "Invalid Namespace", Toast.LENGTH_LONG).show();
+                    break;
                 default:
                     Toast.makeText(SignUp.this, response, Toast.LENGTH_LONG).show();
                     break;

@@ -22,6 +22,7 @@ import com.withjarvis.sayit.JLog.JLog;
 import com.withjarvis.sayit.Keys;
 import com.withjarvis.sayit.Network.Config;
 import com.withjarvis.sayit.Network.Flags;
+import com.withjarvis.sayit.Network.Namespace;
 import com.withjarvis.sayit.Network.SocketStation;
 import com.withjarvis.sayit.R;
 
@@ -37,6 +38,7 @@ public class LogIn extends AppCompatActivity {
     Button submit;
     Button to_sign_up;
     CheckBox show_password_toggle;
+    CheckBox is_ldap;
 
     SharedPreferences shp;
 
@@ -74,6 +76,7 @@ public class LogIn extends AppCompatActivity {
         this.submit = (Button) this.credentials_div.findViewById(R.id.submit);
         this.to_sign_up = (Button) this.log_in.findViewById(R.id.to_sign_up);
         this.show_password_toggle = (CheckBox) this.credentials_div.findViewById(R.id.show_password_toggle);
+        this.is_ldap = (CheckBox) this.credentials_div.findViewById(R.id.is_ldap);
 
         /* Submit listener */
         this.submit.setOnClickListener(new View.OnClickListener() {
@@ -88,11 +91,20 @@ public class LogIn extends AppCompatActivity {
                     return;
                 }
 
-                if (can_send_request) {
-                    new LogInRequest().execute(
-                            handle,
-                            password
-                    );
+                if (is_ldap.isChecked()) {
+                    if (can_send_request) {
+                        new LDAPLogInRequest().execute(
+                                handle,
+                                password
+                        );
+                    }
+                } else {
+                    if (can_send_request) {
+                        new LogInRequest().execute(
+                                handle,
+                                password
+                        );
+                    }
                 }
             }
         });
@@ -181,6 +193,104 @@ public class LogIn extends AppCompatActivity {
                     SharedPreferences.Editor shEditor = shp.edit();
                     shEditor.putString(Keys.SHARED_PREFERENCES.NAME, name);
                     shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, handle);
+                    shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, password);
+                    shEditor.commit();
+                }
+
+                return response;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Server connection refused";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            this.progressDialog.dismiss();
+
+            can_send_request = true;
+            // EOL Exception (Server dies in middle)
+            if (response == null) {
+                Toast.makeText(LogIn.this, "Network Error", Toast.LENGTH_LONG).show();
+                return;
+            }
+            switch (response) {
+                case Flags.ResponseType.SUCCESS:
+                    Intent to_people = new Intent(LogIn.this, People.class);
+                    startActivity(to_people);
+                    break;
+                case Flags.ResponseType.INVALID_CREDENTIALS:
+                    Toast.makeText(LogIn.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    Toast.makeText(LogIn.this, response, Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            can_send_request = true;
+            Log.i(JLog.TAG, "Log In Cancelled");
+        }
+    }
+
+    /**
+     * Connects to Server via TCP socket and requests for LDAP log in
+     * with the given params
+     * <p>
+     * Format Sent
+     * query_type, handle, password (blocks in that order)
+     */
+    private class LDAPLogInRequest extends AsyncTask<String, String, String> {
+
+        ProgressDialog progressDialog = new ProgressDialog(LogIn.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.progressDialog.setMessage("Connecting ...");
+            this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.progressDialog.setCancelable(false);
+            this.progressDialog.setCanceledOnTouchOutside(false);
+            this.progressDialog.setIndeterminate(true);
+            this.progressDialog.show();
+        }
+
+        /**
+         * params seq : handle, password
+         */
+        @Override
+        protected String doInBackground(String[] params) {
+            String handle = params[0];
+            String password = params[1];
+            can_send_request = false;
+            // Creating a socket
+            try {
+                SocketStation ss = new SocketStation(Config.SERVER_IP, Config.SERVER_PORT);
+
+                // Sending QueryType
+                ss.send(Flags.QueryType.LDAP_LOGIN);
+                // Sending handle
+                ss.send(handle);
+                // Sending password
+                ss.send(password);
+
+                // Receive Response
+                String response = ss.receive();
+
+                // EOL Exception (Server dies in middle)
+                if (response == null) {
+                    return null;
+                }
+                // If login success update stored name, handle, password
+                // as login can happen from stored credentials or input credentials
+                else if (response.equals(Flags.ResponseType.SUCCESS)) {
+                    String name = ss.receive();
+                    SharedPreferences.Editor shEditor = shp.edit();
+                    shEditor.putString(Keys.SHARED_PREFERENCES.NAME, name);
+                    // save name space padded handle for future purposes
+                    shEditor.putString(Keys.SHARED_PREFERENCES.HANDLE, Namespace.LDAP + handle);
                     shEditor.putString(Keys.SHARED_PREFERENCES.PASSWORD, password);
                     shEditor.commit();
                 }

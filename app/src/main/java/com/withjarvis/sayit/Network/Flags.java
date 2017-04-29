@@ -14,6 +14,7 @@ public class Flags {
         public static final String ANSWER_FRIEND_REQUEST = "9";
         public static final String GET_STATUS_OF_FRIEND_REQUEST = "10";
         public static final String LOG_OUT = "11";
+        public static final String LDAP_LOGIN = "12";
     }
 
     public class ResponseType {
@@ -24,6 +25,8 @@ public class Flags {
         public static final String INVALID_REGEX = "55";
         public static final String INVALID_PK = "56";
         public static final String IDENTICAL_PKS = "57";
+        public static final String INVALID_NAME_SPACE = "58";
+
         public class FriendRequest {
 
             public static final String REQUEST_ALREADY_PLACED = "58";

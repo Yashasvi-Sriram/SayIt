@@ -17,4 +17,5 @@ Note :
 1. Flag class
 2. JSON keys class
 3. FriendRequest.Status class
+4. LDAP Namespace
     must be identical for server and client
