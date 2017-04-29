@@ -8,6 +8,8 @@ class User(models.Model):
     handle = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
     friends = models.ManyToManyField('User')
+    # Empty string if currently active
+    # Last active time stamp if currently inactive
     last_active = models.CharField(max_length=50)
 
     def __str__(self):

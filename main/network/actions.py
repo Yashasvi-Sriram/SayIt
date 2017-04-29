@@ -31,17 +31,6 @@ The above steps are clearly illustrated in all the functions (actions) below
 """
 
 
-def is_valid_user(handle, password):
-    """
-    :return: True iff a user with such handle and password exist
-    """
-    try:
-        User.objects.get(handle=handle, password=password)
-        return True
-    except ObjectDoesNotExist:
-        return False
-
-
 def sign_up(socket_station):
     """
     :param socket_station: SocketStation instance
@@ -335,7 +324,7 @@ def filter_messages(socket_station):
                         Keys.JSON.SENDER_PK: filtered_message.sender_id,
                         Keys.JSON.RECEIVER_PK: filtered_message.receiver_id,
                         Keys.JSON.CONTENT: filtered_message.content,
-                        Keys.JSON.TIME_STAMP: filtered_message.time_stamp.strftime(Keys.DateTime.DEFAULT_FORMAT)
+                        Keys.JSON.TIME_STAMP: filtered_message.time_stamp.strftime(Keys.DateTime.READABLE_FORMAT)
                     }
                     fm_list.append(fm_dict)
 

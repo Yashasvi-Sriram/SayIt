@@ -1,6 +1,7 @@
 class Keys:
     class DateTime:
         DEFAULT_FORMAT = '%Y-%m-%d %H:%M:%S:%f'
+        READABLE_FORMAT = '%I:%M %p %d %b %y'
 
         def __init__(self):
             pass
