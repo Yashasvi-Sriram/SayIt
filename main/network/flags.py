@@ -13,6 +13,7 @@ class Flags:
         ANSWER_FRIEND_REQUEST = '9'
         GET_STATUS_OF_FRIEND_REQUEST = '10'
         LOG_OUT = '11'
+        LDAP_LOGIN = '12'
 
         def __init__(self):
             pass
@@ -25,6 +26,7 @@ class Flags:
         INVALID_REGEX = '55'
         INVALID_PK = '56'
         IDENTICAL_PKS = '57'
+        INVALID_NAME_SPACE = '58'
 
         class FriendRequest:
             REQUEST_ALREADY_PLACED = '58'

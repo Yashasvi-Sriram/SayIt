@@ -8,6 +8,8 @@ from .keys import Keys
 from datetime import datetime as dt, timedelta as td
 import re
 from suggestions import give_suggestions
+from authenticate import authentication_ldap
+from namespace import Namespace
 
 """
 Protocol (as seen by server)
@@ -45,18 +47,24 @@ def sign_up(socket_station):
     name = socket_station.receive()
     handle = socket_station.receive()
     password = socket_station.receive()
-    try:
-        User.objects.get(handle=handle)
-        print 'Sign up with handle ', handle, ' : Fail - Handle already exists'
-        socket_station.send(Flags.ResponseType.HANDLE_ALREADY_EXIST)
+    # Restricts handle to exclude ldap name space
+    if len(handle) >= len(Namespace.LDAP) and handle[:len(Namespace.LDAP)] == Namespace.LDAP:
+        print 'Sign up with handle ', handle, ' : Fail - invalid name space'
+        socket_station.send(Flags.ResponseType.INVALID_NAME_SPACE)
 
-    except ObjectDoesNotExist:
-        new_user = User(name=name, handle=handle, password=password, last_active="")
-        new_user.save()
-        # Every user is a friend of himself
-        new_user.friends.add(new_user)
-        print 'Sign up with handle ', handle, ' : Success'
-        socket_station.send(Flags.ResponseType.SUCCESS)
+    else:
+        try:
+            User.objects.get(handle=handle)
+            print 'Sign up with handle ', handle, ' : Fail - Handle already exists'
+            socket_station.send(Flags.ResponseType.HANDLE_ALREADY_EXIST)
+
+        except ObjectDoesNotExist:
+            new_user = User(name=name, handle=handle, password=password, last_active="")
+            new_user.save()
+            # Every user is a friend of himself
+            new_user.friends.add(new_user)
+            print 'Sign up with handle ', handle, ' : Success'
+            socket_station.send(Flags.ResponseType.SUCCESS)
 
 
 def log_in(socket_station):
@@ -514,3 +522,38 @@ def get_status_of_friend_request(socket_station):
 
     except ObjectDoesNotExist:
         socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
+
+
+def ldap_login(socket_station):
+    """
+    :param socket_station: SocketStation instance
+
+    1. (done)
+    2. See whether such a user exists
+    3. Expected Format handle, password (blocks in that order)
+    4. If every thing okay send success, name
+        Else if no user send invalid_credentials
+    """
+    handle = socket_station.receive()
+    password = socket_station.receive()
+    try:
+        user = User.objects.get(handle=Namespace.LDAP + handle, password=password)
+        user.last_active = ""
+        user.save()
+        print 'Ldap Login successful for handle : ', handle
+        socket_station.send(Flags.ResponseType.SUCCESS)
+        socket_station.send(user.name)
+
+    except ObjectDoesNotExist:
+        ldap_uid = authentication_ldap(handle, password)
+        if ldap_uid is not False:
+            new_user = User(name=ldap_uid, handle=Namespace.LDAP + handle, password=password, last_active="")
+            new_user.save()
+            # Every user is a friend of himself
+            new_user.friends.add(new_user)
+            print 'Ldap Signup with handle ', handle, ' : Success'
+            socket_station.send(Flags.ResponseType.SUCCESS)
+            socket_station.send(ldap_uid)
+        else:
+            print 'Ldap Login failed for handle : ', handle
+            socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)

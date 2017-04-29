@@ -83,6 +83,9 @@ def start_talking(socket_station):
     elif query_type == Flags.QueryType.LOG_OUT:
         # Pass control to action
         actions.log_out(socket_station)
+    elif query_type == Flags.QueryType.LDAP_LOGIN:
+        # Pass control to action
+        actions.ldap_login(socket_station)
 
 
 # Setup a Server Socket
