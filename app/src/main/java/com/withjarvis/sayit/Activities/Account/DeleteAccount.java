@@ -159,7 +159,7 @@ public class DeleteAccount extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(DeleteAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(DeleteAccount.this, "Log In to continue", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeleteAccount.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     startActivity(to_log_in);
                     break;
                 default:

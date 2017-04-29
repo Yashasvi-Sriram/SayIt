@@ -195,7 +195,7 @@ public class UpdateAccount extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(UpdateAccount.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(UpdateAccount.this, "Log In to continue", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateAccount.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(UpdateAccount.this, LogIn.class);
                     startActivity(to_log_in);
                     break;

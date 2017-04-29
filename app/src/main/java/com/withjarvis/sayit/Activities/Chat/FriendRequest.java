@@ -329,6 +329,7 @@ public class FriendRequest extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(FriendRequest.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FriendRequest.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(FriendRequest.this, LogIn.class);
                     startActivity(to_log_in);
                     break;
@@ -439,6 +440,7 @@ public class FriendRequest extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(FriendRequest.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FriendRequest.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(FriendRequest.this, LogIn.class);
                     startActivity(to_log_in);
                     break;
@@ -548,19 +550,14 @@ public class FriendRequest extends AppCompatActivity {
                 case Flags.ResponseType.SUCCESS:
                     if (this.answer.equals(FriendRequest.Status.ACCEPTED)) {
                         Toast.makeText(FriendRequest.this, "Accepted", Toast.LENGTH_LONG).show();
-                        Starter.startChatWindow(
-                                other_person_name,
-                                other_person_handle,
-                                other_person_pk,
-                                FriendRequest.this
-                        );
                     } else if (this.answer.equals(FriendRequest.Status.REJECTED)) {
                         Toast.makeText(FriendRequest.this, "Blocked", Toast.LENGTH_LONG).show();
-                        startActivity(to_people);
                     }
+                    startActivity(to_people);
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(FriendRequest.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FriendRequest.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(FriendRequest.this, LogIn.class);
                     startActivity(to_log_in);
                     break;

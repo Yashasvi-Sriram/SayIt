@@ -45,7 +45,7 @@ public class SocketStation {
         this.port = port;
         // Close the previous instance of socket if any
         if (this.socket != null)
-            if (this.socket.isClosed())
+            if (!this.socket.isClosed())
                 this.socket.close();
         // Create a new socket
         this.socket = new Socket(this.serverAddress, this.port);

@@ -282,6 +282,7 @@ public class People extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(People.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(People.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(People.this, LogIn.class);
                     startActivity(to_log_in);
                     break;

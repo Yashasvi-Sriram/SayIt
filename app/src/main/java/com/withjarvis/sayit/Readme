@@ -1,20 +1,20 @@
 FIX :
 ===
-1. get handle and password in onCreate not in listener
-2. handle broken pipe and eol cases robustly
-3. when server dies while in chat window do not repeatedly give server connection refused
+1. when server dies while in chat window do not repeatedly give server connection refused
+2. get handle and password in onCreate not in listener
+3. handle broken pipe and eol cases robustly
 
 Todo :
 ======
-1. select()
-2. ldap integration
-3. online list
-4. groups
-5. multimedia
+        1. select()
+        2. ldap integration
+(done)  3. online list
+        4. groups
+        5. multimedia
 
 Note :
 ====
-1. Flag Classes
-2. JSON keys classes
-3. FriendRequest.Status classes
+1. Flag class
+2. JSON keys class
+3. FriendRequest.Status class
     must be identical for server and client

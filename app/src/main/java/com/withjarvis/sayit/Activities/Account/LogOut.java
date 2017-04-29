@@ -79,6 +79,7 @@ public class LogOut {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;

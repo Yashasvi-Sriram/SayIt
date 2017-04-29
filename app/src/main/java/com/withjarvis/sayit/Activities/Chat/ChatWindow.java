@@ -153,7 +153,7 @@ public class ChatWindow extends AppCompatActivity {
         content.setText(msg_content);
         content.setTextColor(Colors.WHITE);
         content.setTextSize(com.withjarvis.sayit.Config.TEXT_SIZE);
-        content.setPadding(20, 20, 20, 20);
+        content.setPadding(com.withjarvis.sayit.Config.PADDING, com.withjarvis.sayit.Config.PADDING, com.withjarvis.sayit.Config.PADDING, com.withjarvis.sayit.Config.PADDING);
 
         /* sender handle */
         Resources res = getResources();
@@ -187,6 +187,7 @@ public class ChatWindow extends AppCompatActivity {
         String msg_content = msg.getString(com.withjarvis.sayit.Network.Keys.JSON.CONTENT);
         int msg_sender_pk = msg.getInt(com.withjarvis.sayit.Network.Keys.JSON.SENDER_PK);
         int msg_receiver_pk = msg.getInt(com.withjarvis.sayit.Network.Keys.JSON.RECEIVER_PK);
+        final String msg_time_stamp = msg.getString(com.withjarvis.sayit.Network.Keys.JSON.TIME_STAMP);
 
         Log.i(JLog.TAG, String.valueOf(msg_sender_pk));
         Log.i(JLog.TAG, String.valueOf(msg_receiver_pk));
@@ -211,7 +212,7 @@ public class ChatWindow extends AppCompatActivity {
         content.setText(msg_content);
         content.setId(1);
         content.setTextSize(com.withjarvis.sayit.Config.TEXT_SIZE);
-        content.setPadding(20, 20, 20, 20);
+        content.setPadding(com.withjarvis.sayit.Config.PADDING, com.withjarvis.sayit.Config.PADDING, com.withjarvis.sayit.Config.PADDING, com.withjarvis.sayit.Config.PADDING);
 
         /* sender handle */
         Resources res = getResources();
@@ -251,6 +252,12 @@ public class ChatWindow extends AppCompatActivity {
         /* makes hierarchy */
         vessel.addView(content);
         vessel.addView(sender_handle);
+        vessel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChatWindow.this, msg_time_stamp, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return vessel;
     }
@@ -364,6 +371,7 @@ public class ChatWindow extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(ChatWindow.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChatWindow.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(ChatWindow.this, LogIn.class);
                     startActivity(to_log_in);
                     break;
@@ -474,6 +482,7 @@ public class ChatWindow extends AppCompatActivity {
                     break;
                 case Flags.ResponseType.INVALID_CREDENTIALS:
                     Toast.makeText(ChatWindow.this, "Invalid Credentials", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChatWindow.this, "Your credentials may be changed from some other device", Toast.LENGTH_LONG).show();
                     Intent to_log_in = new Intent(ChatWindow.this, LogIn.class);
                     startActivity(to_log_in);
                     break;
