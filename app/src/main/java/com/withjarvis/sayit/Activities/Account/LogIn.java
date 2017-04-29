@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,11 +36,13 @@ public class LogIn extends AppCompatActivity {
     EditText password_input;
     Button submit;
     Button to_sign_up;
+    CheckBox show_password_toggle;
 
     SharedPreferences shp;
 
     /* Prevents simultaneous requests (rare case, click submit while automatic login occurs) */
     boolean can_send_request = true;
+    boolean password_visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class LogIn extends AppCompatActivity {
         this.password_input = (EditText) this.credentials_div.findViewById(R.id.password_input);
         this.submit = (Button) this.credentials_div.findViewById(R.id.submit);
         this.to_sign_up = (Button) this.log_in.findViewById(R.id.to_sign_up);
+        this.show_password_toggle = (CheckBox) this.credentials_div.findViewById(R.id.show_password_toggle);
 
         /* Submit listener */
         this.submit.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +106,21 @@ public class LogIn extends AppCompatActivity {
             }
         });
 
+        this.show_password_toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(password_visible) {
+                    password_visible = false;
+                    password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    show_password_toggle.setChecked(false);
+                }
+                else {
+                    password_visible = true;
+                    password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    show_password_toggle.setChecked(true);
+                }
+            }
+        });
     }
 
     @Override
