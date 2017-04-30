@@ -1,3 +1,20 @@
+"""
+This module contains functions called actions
+
+The control is passed to an action
+    1. from start_talking function in listener module
+    2. after tallying the query type received with the list of actions available
+
+An action is a function which implements steps 2, 3, 4 of SayMTP
+Therefore each action has three specifications
+    Credentials Format
+    Further info
+    Response
+
+Then query received is answered in the action it is passed into
+
+The answer may be a flag(mutually agreed upon by client and server) or raw text
+"""
 import json
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -38,11 +55,14 @@ def sign_up(socket_station):
     """
     :param socket_station: SocketStation instance
     
-    1. (done)
-    2. (no need)
-    3. Expected Format
-        name, handle, password (blocks in that order)
-    4. Send success or handle already exists
+    Credentials Format  : not required
+    Further info        : name, handle, password in that order
+    Response            : If sign up is success : SUCCESS
+                          If handle's namespace is invalid : INVALID_NAME_SPACE
+                          If handle already exists : HANDLE_ALREADY_EXIST
+    
+    If SUCCESS:
+    Creates a new user in local db
     """
     name = socket_station.receive()
     handle = socket_station.receive()
@@ -70,12 +90,13 @@ def sign_up(socket_station):
 def log_in(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. See whether such a user exists
-    3. Expected Format handle, password (blocks in that order)
-    4. If every thing okay send success, name
-        Else if no user send invalid_credentials
+    
+    Credentials Format  : handle, password in that order
+    Further info        : none
+    Response            : If log in is success : SUCCESS, name in that order
+                          If invalid credentials : INVALID_CREDENTIALS
+    
+    Validates user using the handle and password received from local db
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -94,11 +115,14 @@ def log_in(socket_station):
 def update_account(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists
-    3. Expected Format handle, old_password, new_name, new_password (blocks in that order)
-    4. send success or invalid credentials
+    
+    Credentials Format  : handle, password in that order
+    Further info        : new_name, new_password in that order
+    Response            : If update is success : SUCCESS
+                          If invalid credentials : INVALID_CREDENTIALS
+    
+    If SUCCESS:
+    Updates existing user with new password and name in local db
     """
     handle = socket_station.receive()
     old_password = socket_station.receive()
@@ -119,11 +143,14 @@ def update_account(socket_station):
 def delete_account(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists
-    3. Expected Format handle, password (blocks in that order)
-    4. send success or invalid credentials
+    
+    Credentials Format  : handle, password in that order
+    Further info        : none
+    Response            : If delete is success : SUCCESS
+                          If invalid credentials : INVALID_CREDENTIALS
+    
+    If SUCCESS:
+    Deletes user and all their related data in local db
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -139,14 +166,16 @@ def delete_account(socket_station):
 
 def log_out(socket_station):
     """
-        :param socket_station: SocketStation instance
-
-        1. (done)
-        2. See whether such a user exists
-        3. Expected Format handle, password (blocks in that order)
-        4. If every thing okay send success, name
-            Else if no user send invalid_credentials
-        """
+    :param socket_station: SocketStation instance
+    
+    Credentials Format  : handle, password in that order
+    Further info        : none
+    Response            : If log out is success : SUCCESS
+                          If invalid credentials : INVALID_CREDENTIALS
+    
+    If SUCCESS:
+    Flags the user inactive
+    """
     handle = socket_station.receive()
     password = socket_station.receive()
     try:
@@ -164,12 +193,18 @@ def log_out(socket_station):
 def filter_people(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
-    3. Expected Format regex_string
-    4. send success or invalid credentials or invalid regex,
-        if success send the json string of matched users
+    
+    Credentials Format  : handle, password in that order
+    Further info        : regex_string
+    Response            : If filter is success    : SUCCESS, json_response in that order
+                          If invalid credentials  : INVALID_CREDENTIALS
+                          If invalid regex_string : INVALID_REGEX
+    
+    If SUCCESS:
+    Divides the users into friends and strangers
+    Sorts strangers according to give_suggestions() function in suggestion module
+    Filters them with to regex_string received
+    Sends this data as json string
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -242,19 +277,23 @@ def filter_people(socket_station):
         socket_station.send(Flags.ResponseType.INVALID_CREDENTIALS)
 
 
-def new_message(socket_station):
+def new_messages(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
-    3. Expected Format pk_of_receiver, json_string_of_messages
-    4. send success or invalid credentials or invalid pk
+    
+    Credentials Format  : handle, password in that order
+    Further info        : pk_of_receiver, json_string_of_messages in that order
+    Response            : If filter is success    : SUCCESS
+                          If invalid credentials  : INVALID_CREDENTIALS
+                          If invalid receiver pk  : INVALID_PK
+                          If receiver not friend  : NOT_FRIEND
+    If SUCCESS:
+    Stores all new messages received in local  db
     """
     handle = socket_station.receive()
     password = socket_station.receive()
     receiver_pk = socket_station.receive()
-    new_messages = json.loads(socket_station.receive())
+    _new_messages = json.loads(socket_station.receive())
 
     try:
         sender = User.objects.get(handle=handle, password=password)
@@ -263,13 +302,13 @@ def new_message(socket_station):
             # Both sender and receiver are verified
             # If friends
             if sender.friends.get(pk=receiver.pk) == receiver:
-                for new_mess in new_messages:
+                for new_mess in _new_messages:
                     user_to_user_message = UTUMessage(content=new_mess,
                                                       sender_id=sender.pk,
                                                       receiver_id=receiver.pk)
                     user_to_user_message.save()
 
-                print len(new_messages), 'New message successfully stored from handle ', \
+                print len(_new_messages), 'New message successfully stored from handle ', \
                     sender.handle, ' to ', receiver.handle
                 socket_station.send(Flags.ResponseType.SUCCESS)
             else:
@@ -285,13 +324,18 @@ def new_message(socket_station):
 def filter_messages(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
-    3. Expected Format pk of receiver, timestamp
-    4. send success or invalid credentials or invalid pk
-        if success send the json string of array of message objects
-            then send the latest timestamp
+    
+    Credentials Format  : handle, password in that order
+    Further info        : pk_of_receiver, timestamp in that order
+    Response            : If filter is success    : SUCCESS, json_response, new_timestamp in that order
+                          If invalid credentials  : INVALID_CREDENTIALS
+    
+    If SUCCESS:
+    Filters messages sent by sender, received by receiver
+                     received by sender,sent by receiver
+                     after the given timestamp 
+                     (if empty timestamp, no restriction of timestamp)
+    Sends these messages as json string
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -368,11 +412,17 @@ def filter_messages(socket_station):
 def place_friend_request(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
-    3. Expected Format pk of friend request receiver, message for the friend request
-    4. send success or invalid credentials or invalid pk or identical pks or already placed
+    
+    Credentials Format  : handle, password in that order
+    Further info        : pk_of_fr_receiver, message_in_fr in that order (fr = friend request)
+    Response            : If filter is success    : SUCCESS
+                          If invalid receiver pk  : INVALID_PK
+                          If invalid credentials  : INVALID_CREDENTIALS
+                          If receiver and sender same  : IDENTICAL_PKS
+                          If fr already placed    : ALREADY_PLACED
+    
+    If SUCCESS:
+    Creates a friend request object in local db
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -411,11 +461,17 @@ def place_friend_request(socket_station):
 def answer_friend_request(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
-    3. Expected Format pk of friend request receiver, answer for the friend request
-    4. send success or invalid credentials or invalid pk or identical pks or already answered
+    
+    Credentials Format  : handle, password in that order
+    Further info        : pk_of_fr_sender, answer_for_fr in that order (fr = friend request)
+    Response            : If filter is success    : SUCCESS
+                          If invalid sender pk    : INVALID_PK
+                          If invalid credentials  : INVALID_CREDENTIALS
+                          If receiver and sender same  : IDENTICAL_PKS
+                          If fr already answered    : ALREADY_ANSWERED
+    
+    If SUCCESS:
+    Changes the status of existing friend request according to "answer_to_fr" received
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -483,12 +539,17 @@ def answer_friend_request(socket_station):
 def get_status_of_friend_request(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. see whether such a user exists. Expected Format handle, password (blocks in that order)
-    3. Expected Format pk of friend request receiver
-    4. send success or invalid credentials or invalid pk or identical pks, no_such_request
-        if success send the json friend request
+    
+    Credentials Format  : handle, password in that order
+    Further info        : pk_of_other_friend
+    Response            : If filter is success          : SUCCESS, json_response in that order
+                          If invalid other friend pk    : INVALID_PK
+                          If invalid credentials        : INVALID_CREDENTIALS
+                          If receiver and sender same   : IDENTICAL_PKS
+                          If no such fr                 : NO_SUCH_FRIEND_REQUEST (fr = friend request)
+    
+    If SUCCESS:
+    Sends the status of existing friend request
     """
     handle = socket_station.receive()
     password = socket_station.receive()
@@ -527,12 +588,17 @@ def get_status_of_friend_request(socket_station):
 def ldap_login(socket_station):
     """
     :param socket_station: SocketStation instance
-
-    1. (done)
-    2. See whether such a user exists
-    3. Expected Format handle, password (blocks in that order)
-    4. If every thing okay send success, name
-        Else if no user send invalid_credentials
+    
+    Credentials Format  : handle, password in that order
+    Further info        : pk_of_other_friend
+    Response            : If filter is success          : SUCCESS, json_response in that order
+                          If invalid credentials        : INVALID_CREDENTIALS
+    
+    Searches for the user in local db first
+        If found then SUCCESS
+        Else searches in ldap db
+            If found then create user in local db, SUCCESS
+            Else INVALID_CREDENTIALS
     """
     handle = socket_station.receive()
     password = socket_station.receive()

@@ -1,4 +1,42 @@
-#!/usr/bin/python
+"""
+Main server init script
+
+High Level Protocol (SayMTP):
+=======================================
+When a client opens a connection with a socket
+
+    1.What do you want? What is the query?
+        - Format expected : Integer Flag, mutually agreed upon by client and server
+
+    2.Who are you?
+        - If SignUp then skip this step
+        - Else ask for credentials (for any query other than sign up credentials are required)
+            - Format expected : Handle, Password blocks sent in this order
+
+The below steps are specific to query    
+
+    3.Tell me more ...
+        - More information transferred as required by the query
+
+    4.So your answer is ...
+        - Send the response to the client
+
+Implementation:
+==============
+Creates a socket, sets options and binds it to IP address and Port
+
+1.Then calls accept() function on the socket created and waits for client to connect
+
+2.When accepted gets the new socket formed "c"
+3.and creates a SocketStation class(written by us) instance "ss" using that new socket
+
+4.Then start_talking function is called with "ss" as argument, from where the SayMTP protocol is implemented
+
+5.Finally when control returns back from some action, the socket "c" is closed
+
+The above 5 steps are executed in an infinite loop
+"""
+# !/usr/bin/python
 
 import socket
 
@@ -14,28 +52,15 @@ django.setup()
 
 from main.network import actions
 
-"""
-Protocol (as seen by server)
-    1.What do you want?
-        - Format : (using an query-int map identical at server and all clients)
-            Integer
-    
-The next steps are implemented using actions
-
-    2.Who are you?
-        - Format : Blocks sent in this order (not required for sign up)
-            Handle, Password
-        - For other than sign up credentials are required
-
-    3.Tell me more
-        - More options transferred as required by the query
-
-    4.So your answer is ...
-        - Send the response to the client
-"""
-
 
 def start_talking(socket_station):
+    """
+    Implements the first step of the SayMTP protocol
+    i.e. 
+    1. asks for the query type
+    2. based on received query type 
+        redirects to one of the actions where the rest of the SayMTP is implemented
+    """
     # What do you want?
     query_type = socket_station.receive()
     print 'Received query : ', query_type
@@ -62,7 +87,7 @@ def start_talking(socket_station):
 
     elif query_type == Flags.QueryType.NEW_MESSAGE:
         # Pass control to action
-        actions.new_message(socket_station)
+        actions.new_messages(socket_station)
 
     elif query_type == Flags.QueryType.FILTER_MESSAGES:
         # Pass control to action

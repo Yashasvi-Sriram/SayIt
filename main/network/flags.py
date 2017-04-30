@@ -1,5 +1,11 @@
 class Flags:
+    """
+    Container for flags used in SayMTP protocol
+    """
     class QueryType:
+        """
+        Container for Query Type flags used in SayMTP protocol
+        """
         SIGN_UP = '1'
         LOG_IN = '2'
         UPDATE_ACCOUNT = '3'
@@ -19,6 +25,9 @@ class Flags:
             pass
 
     class ResponseType:
+        """
+        Container for Response Type flags used in SayMTP protocol
+        """
         SUCCESS = '51'
         FAILURE = '52'
         HANDLE_ALREADY_EXIST = '53'
@@ -29,6 +38,9 @@ class Flags:
         INVALID_NAME_SPACE = '58'
 
         class FriendRequest:
+            """
+            Container for special Friend Request Response Type flags used in SayMTP protocol
+            """
             REQUEST_ALREADY_PLACED = '58'
             NO_SUCH_FRIEND_REQUEST = '59'
             REQUEST_ALREADY_ANSWERED = '60'

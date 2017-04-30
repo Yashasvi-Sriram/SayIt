@@ -1,4 +1,20 @@
 class SocketStation:
+    """
+    Wrapper class for python sockets
+    Similar class is implemented in client
+    Together they block abstraction from TCP segments
+    
+    i.e. When send(data) is called at server, 
+        the data is padded with headers 
+        so that it can be extracted as is when the client calls receive()
+
+        and vice versa
+    
+    Ex: data        = hello\n
+        send(data) is called at server
+        receive() is called at client
+        client gets hello\n irrespective of what else exists in client receive buffer
+    """
     # Must be same for client and server
     # Cannot be a digit
     # Must not be an empty string
@@ -14,7 +30,7 @@ class SocketStation:
 
     def __init__(self, sock):
         """
-        :param sock: the pointer to socket instance
+        :param sock: the pointer to python socket instance
         """
         self.sock = sock
 
@@ -22,7 +38,7 @@ class SocketStation:
         """
         :param data: string to be sent
         :return: True if all the data is sent successfully
-        packet format = body_length(delimiter)body
+        padded-data = data_length + (delimiter) + data + \n
         """
         # For java's read line purposes
         data += '\n'
@@ -37,8 +53,9 @@ class SocketStation:
 
     def receive(self):
         """
-        :return: the string received
-        expected packet format = body_length(delimiter)body
+        :return: the string received if successfully received
+                    None otherwise
+        expected format = body_length + (delimiter) + body
         """
         # Handles (nothing)(delimiter) case (not req if format is proper)
         body_len_string = '0'

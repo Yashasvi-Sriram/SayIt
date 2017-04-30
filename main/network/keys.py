@@ -1,5 +1,8 @@
 class Keys:
     class DateTime:
+        """
+        Container for keys used in parsing datetime strings
+        """
         DEFAULT_FORMAT = '%Y-%m-%d %H:%M:%S:%f'
         READABLE_FORMAT = '%I:%M %p %d %b %y'
 
@@ -7,6 +10,9 @@ class Keys:
             pass
 
     class JSON:
+        """
+        Container for keys used in creating json objects
+        """
         PK = 'pk'
         NAME = 'name'
         HANDLE = 'handle'

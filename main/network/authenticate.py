@@ -1,3 +1,6 @@
+"""
+Authenticate docs
+"""
 import ldap
 
 

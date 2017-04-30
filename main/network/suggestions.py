@@ -1,8 +1,14 @@
+"""
+Container for functions used to sort strangers list and give suggestions for making friends
+"""
 cntFriendOfFriends = {}
 cntTotFriends = {}
 
 
 def my_compare_other(x, y):
+    """
+    Helper for making suggestions
+    """
     if cntTotFriends[x] > cntTotFriends[y]:
         return -1
     elif cntTotFriends[x] < cntTotFriends[y]:
@@ -15,6 +21,9 @@ def my_compare_other(x, y):
 
 
 def my_compare(x, y):
+    """
+    Helper for making suggestions
+    """
     x_pres = x in cntFriendOfFriends
     y_pres = y in cntFriendOfFriends
     if x_pres and y_pres:
@@ -33,6 +42,9 @@ def my_compare(x, y):
 
 
 def my_suggestions(id_of_person, adj_list):
+    """
+    Helper for making suggestions
+    """
     friends = {}
     not_friends = []
     suggestions_order_2d = []
@@ -71,6 +83,13 @@ def my_suggestions(id_of_person, adj_list):
 
 
 def give_suggestions(id_of_person, users):
+    """
+    A stranger is more suggestible if he/she has more mutual friends
+    
+    :param id_of_person: pk of the person asking suggestions
+    :param users: all users
+    :return: [friends_list, sorted_strangers_list]
+    """
     adj_list = []
     for user in users:
         temp = [user.pk]
