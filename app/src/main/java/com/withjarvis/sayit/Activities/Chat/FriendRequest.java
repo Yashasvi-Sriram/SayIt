@@ -145,7 +145,7 @@ public class FriendRequest extends AppCompatActivity {
     }
 
     /**
-     * Status Codes
+     * Friend Request Status Codes
      */
     private class Status {
         public static final String PENDING = "0";
@@ -154,12 +154,10 @@ public class FriendRequest extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for
-     * friend request status with the selected person
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password, other person pk
+     * Connects to Server via TCP socket
+     * and requests for friend request status
+     * Blocks sent
+     * query_type, handle, password, other person pk in that order
      */
     private class GetFriendRequestStatus extends AsyncTask<String, String, String> {
 
@@ -354,12 +352,10 @@ public class FriendRequest extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and
-     * places a friend request with message
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password, other person pk, message
+     * Connects to Server via TCP socket
+     * and requests for friend request status
+     * Blocks sent
+     * query_type, handle, password, other person pk, message in that order
      */
     private class PlaceFriendRequest extends AsyncTask<String, String, String> {
 
@@ -469,12 +465,10 @@ public class FriendRequest extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and
-     * answers friend request
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password, other person pk, answer
+     * Connects to Server via TCP socket
+     * and requests for friend request status
+     * Blocks sent
+     * query_type, handle, password, other person pk, answer in that order
      */
     private class AnswerFriendRequest extends AsyncTask<String, String, String> {
 

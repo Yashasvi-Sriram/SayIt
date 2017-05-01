@@ -35,6 +35,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+/**
+ * Handles chatting with a single user
+ * Uses two buffers
+ *      New Message Buffer
+ *      In Sync Message Buffer
+ * */
 public class ChatWindow extends AppCompatActivity {
 
     /* Views */
@@ -122,6 +128,9 @@ public class ChatWindow extends AppCompatActivity {
         this.scrollToLatestMessage();
     }
 
+    /**
+     * Scrolls down to last message
+     * */
     private void scrollToLatestMessage() {
         chat_slide.post(new Runnable() {
             @Override
@@ -131,6 +140,10 @@ public class ChatWindow extends AppCompatActivity {
         });
     }
 
+    /**
+     * Creates message stub from param
+     * @param msg_content: content in message
+     * */
     private RelativeLayout getNewMessageStub(String msg_content) {
         final TextView content = new TextView(this);
         TextView sender_handle = new TextView(this);
@@ -183,6 +196,10 @@ public class ChatWindow extends AppCompatActivity {
         return vessel;
     }
 
+    /**
+     * Creates message stub from param
+     * @param msg: message json object
+     * */
     private RelativeLayout getNewMessageStub(JSONObject msg) throws JSONException {
         String msg_content = msg.getString(com.withjarvis.sayit.Network.Keys.JSON.CONTENT);
         int msg_sender_pk = msg.getInt(com.withjarvis.sayit.Network.Keys.JSON.SENDER_PK);
@@ -262,17 +279,26 @@ public class ChatWindow extends AppCompatActivity {
         return vessel;
     }
 
+    /**
+     * Creates message stub in new-message buffer using param
+     * */
     private void appendToNewMessageBuffer(String new_message) {
         this.new_messages_buffer.put(new_message);
         this.new_messages_stack.addView(this.getNewMessageStub(new_message));
         this.scrollToLatestMessage();
     }
 
+    /**
+     * Creates message stub in in-sync message buffer using param
+     * */
     private void appendToInSyncBuffer(JSONObject object) throws JSONException {
         this.in_sync_buffer.put(object);
         this.in_sync_stack.addView(getNewMessageStub(object));
     }
 
+    /**
+     * Append all messages to in-sync message buffer
+     * */
     private void renderSyncedMessages(JSONArray jsonArray) {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
@@ -293,11 +319,12 @@ public class ChatWindow extends AppCompatActivity {
         new_messages_buffer = new JSONArray();
     }
 
+
     /**
-     * Connects to Server via TCP socket and sends new messages
-     * <p>
-     * Format Sent
-     * query_type, handle, password, pk of receiver, json string of new messages(blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for New message flushing
+     * Blocks sent
+     * query_type, handle, password, pk of receiver, json string of new messages in that order
      */
     private class FlushNewMessageBuffer extends AsyncTask<String, String, String> {
 
@@ -403,10 +430,10 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for messages
-     * <p>
-     * Format Sent
-     * query_type, handle, password, pk of receiver, timestamp (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for New message flushing
+     * Blocks sent
+     * query_type, handle, password, pk of receiver, timestamp in that order
      */
     private class SyncMessages extends AsyncTask<String, String, String> {
 

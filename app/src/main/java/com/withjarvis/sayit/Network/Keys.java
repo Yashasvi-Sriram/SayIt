@@ -1,5 +1,8 @@
 package com.withjarvis.sayit.Network;
 
+/**
+ * Container for keys used in parsing json objects
+ * */
 public class Keys {
     public class JSON {
         public static final String PK = "pk";

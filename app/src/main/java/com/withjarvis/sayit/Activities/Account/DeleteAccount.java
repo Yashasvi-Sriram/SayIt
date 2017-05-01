@@ -24,6 +24,9 @@ import com.withjarvis.sayit.R;
 
 import java.io.IOException;
 
+/**
+ * Handles deleting account
+ * */
 public class DeleteAccount extends AppCompatActivity {
 
     /* Views */
@@ -36,6 +39,9 @@ public class DeleteAccount extends AppCompatActivity {
 
     boolean can_send_request = true;
 
+    /**
+     * Removes back button functionality, by overriding with empty callback
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +82,10 @@ public class DeleteAccount extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for delete account
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for Delete account
+     * Blocks sent
+     * query_type, handle, password in that order
      */
     private class DeleteAccountRequest extends AsyncTask<String, String, String> {
 

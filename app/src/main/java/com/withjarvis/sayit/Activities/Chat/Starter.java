@@ -3,6 +3,11 @@ package com.withjarvis.sayit.Activities.Chat;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * Wrapper class for starting activities
+ *      ChatWindow
+ *      FriendRequest
+ * */
 public class Starter {
 
     public class Keys {

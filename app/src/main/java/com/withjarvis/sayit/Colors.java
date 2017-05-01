@@ -2,6 +2,9 @@ package com.withjarvis.sayit;
 
 import android.graphics.Color;
 
+/**
+ * Container of int colors
+ * */
 public class Colors {
     public static final int WHITE = Color.parseColor("#ffffff");
     public static final int BLACK = Color.parseColor("#000000");

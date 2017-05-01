@@ -24,7 +24,9 @@ import com.withjarvis.sayit.Network.SocketStation;
 import com.withjarvis.sayit.R;
 
 import java.io.IOException;
-
+/**
+ * Handles sign up
+ * */
 public class SignUp extends AppCompatActivity {
 
     /* Views */
@@ -91,16 +93,18 @@ public class SignUp extends AppCompatActivity {
 
     }
 
+    /**
+     * Removes back button functionality, by overriding with empty callback
+     * */
     @Override
     public void onBackPressed() {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for sign up
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, name, handle, password (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for Sign Up
+     * Blocks sent
+     * query_type, name, handle, password in that order
      */
     private class SignUpRequest extends AsyncTask<String, String, String> {
 

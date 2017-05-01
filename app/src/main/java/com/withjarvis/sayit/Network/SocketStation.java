@@ -12,7 +12,20 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 /**
- * Wrapper for socket formation and communication
+ * Wrapper for java socket formation and communication
+ * Similar class is implemented in server
+ * Together they block abstraction from TCP segments
+ *
+ * i.e. When send(data) is called at client,
+ * the data is padded with headers
+ * so that it can be extracted as is when the server calls receive()
+ *
+ * and vice versa
+ *
+ * Ex: data        = hello\n
+ * send(data) is called at client
+ * receive() is called at server
+ * server gets hello\n irrespective of what else exists in server receive buffer
  */
 public class SocketStation {
     // Must be same for client and server
@@ -57,7 +70,7 @@ public class SocketStation {
 
     /**
      * Takes the param and writes it and then flushes it using the BufferedOutputStream
-     * Packet Format = body_length(delimiter)body
+     * Packet Format = body_length + (delimiter) + body
      */
     public boolean send(String body) throws IOException {
         int data_length = body.length();
@@ -73,7 +86,7 @@ public class SocketStation {
     }
 
     /**
-     * Expected Packet Format = body_length(delimiter)body'\n'
+     * Expected Packet Format = body_length + (delimiter) + body + '\n'
      * Returns body
      */
     public String receive() throws IOException {

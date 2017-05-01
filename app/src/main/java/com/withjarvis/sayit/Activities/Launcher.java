@@ -5,12 +5,16 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.withjarvis.sayit.Activities.Account.LogIn;
 import com.withjarvis.sayit.Device;
 import com.withjarvis.sayit.R;
 
 public class Launcher extends AppCompatActivity {
+
+    RelativeLayout launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +28,16 @@ public class Launcher extends AppCompatActivity {
         Device.WIDTH = size.x;
         Device.HEIGHT = size.y;
 
-        /* Goes to log in activity */
-        Intent to_log_in = new Intent(this, LogIn.class);
-        this.startActivity(to_log_in);
+        this.launcher = (RelativeLayout) findViewById(R.id.launcher);
+
+        this.launcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /* Goes to log in activity */
+                Intent to_log_in = new Intent(Launcher.this, LogIn.class);
+                startActivity(to_log_in);
+            }
+        });
 
     }
 }

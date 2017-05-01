@@ -16,6 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Adapter for creating List View for all strangers
+ * */
 public class OthersListAdapter extends BaseAdapter {
     private Context context;
     private JSONArray users;

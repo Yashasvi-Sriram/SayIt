@@ -1,7 +1,13 @@
 package com.withjarvis.sayit.Network;
 
+/**
+ * Container for flags used in SayMTP protocol
+ * */
 public class Flags {
 
+    /**
+     * Container for Query Type flags used in SayMTP protocol
+     * */
     public class QueryType {
         public static final String SIGN_UP = "1";
         public static final String LOG_IN = "2";
@@ -17,6 +23,9 @@ public class Flags {
         public static final String LDAP_LOGIN = "12";
     }
 
+    /**
+     * Container for Response Type flags used in SayMTP protocol
+     * */
     public class ResponseType {
         public static final String SUCCESS = "51";
         public static final String FAILURE = "52";
@@ -27,6 +36,9 @@ public class Flags {
         public static final String IDENTICAL_PKS = "57";
         public static final String INVALID_NAME_SPACE = "58";
 
+        /**
+         * Container for special Friend Request Response Type flags used in SayMTP protocol
+         * */
         public class FriendRequest {
 
             public static final String REQUEST_ALREADY_PLACED = "58";

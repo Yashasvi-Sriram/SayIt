@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.withjarvis.sayit.Activities.Launcher">
+    tools:context="com.withjarvis.sayit.Activities.Launcher"
+    android:id="@+id/launcher">
 
     <TextView
         android:layout_width="wrap_content"

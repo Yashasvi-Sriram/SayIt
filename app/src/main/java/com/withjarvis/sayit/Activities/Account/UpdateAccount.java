@@ -26,6 +26,9 @@ import com.withjarvis.sayit.R;
 
 import java.io.IOException;
 
+/**
+ * Handles updating account
+ * */
 public class UpdateAccount extends AppCompatActivity {
 
     /* Views */
@@ -42,6 +45,9 @@ public class UpdateAccount extends AppCompatActivity {
 
     boolean can_send_request = true;
 
+    /**
+     * Removes back button functionality, by overriding with empty callback
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,11 +106,10 @@ public class UpdateAccount extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for update account
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, old_password, new_name, new_password (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for Update account
+     * Blocks sent
+     * query_type, handle, old_password, new_name, new_password in that order
      */
     private class UpdateAccountRequest extends AsyncTask<String, String, String> {
 

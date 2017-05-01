@@ -12,6 +12,9 @@ import com.withjarvis.sayit.Network.SocketStation;
 
 import java.io.IOException;
 
+/**
+ * Handles logging out
+ * */
 public class LogOut {
     Context context;
     String handle;
@@ -29,10 +32,10 @@ public class LogOut {
     }
 
     /**
-     * Connects to Server via TCP socket and hits it to indicate that logging out
-     * <p>
-     * Format Sent
-     * query_type, handle, password (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for Log Out
+     * Blocks sent
+     * query_type, handle, password in that order
      */
     private class LogOutRequest extends AsyncTask<String, String, String> {
 

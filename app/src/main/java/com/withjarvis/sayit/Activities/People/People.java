@@ -37,6 +37,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+/**
+ * Lists all people
+ *      Friends
+ *      Strangers
+ * Provides regex search in users
+ * */
 public class People extends AppCompatActivity {
 
     /* Views */
@@ -127,6 +133,9 @@ public class People extends AppCompatActivity {
         }
     }
 
+    /**
+     * Removes back button functionality, by overriding with empty callback
+     * */
     @Override
     public void onBackPressed() {
     }
@@ -156,6 +165,10 @@ public class People extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Removes stored credentials
+     * And puts a logout request to server
+     * */
     private void logout() {
         /* Remove the stored credentials and go to log in activity */
         SharedPreferences shp = getSharedPreferences(Keys.SHARED_PREFERENCES.FILE, Context.MODE_PRIVATE);
@@ -171,23 +184,27 @@ public class People extends AppCompatActivity {
         startActivity(to_log_in);
     }
 
+    /**
+     * Goes to DeleteAccount activity
+     * */
     private void delete_account() {
         Intent to_delete_account = new Intent(this, DeleteAccount.class);
         startActivity(to_delete_account);
     }
 
+    /**
+     * Goes to UpdateAccount activity
+     * */
     private void update_account() {
         Intent to_update_account = new Intent(this, UpdateAccount.class);
         startActivity(to_update_account);
     }
 
     /**
-     * Connects to Server via TCP socket and requests for
-     * users with name matching regex string
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password, regex_string (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for filter users
+     * Blocks sent
+     * query_type, handle, password, regex_string in that order
      */
     private class GetFilteredPeople extends AsyncTask<String, String, String> {
 

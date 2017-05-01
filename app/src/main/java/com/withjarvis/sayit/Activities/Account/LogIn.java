@@ -28,6 +28,9 @@ import com.withjarvis.sayit.R;
 
 import java.io.IOException;
 
+/**
+ * Handles log in into local db and other login methods like LDAP
+ * */
 public class LogIn extends AppCompatActivity {
 
     /* Views */
@@ -135,16 +138,18 @@ public class LogIn extends AppCompatActivity {
         });
     }
 
+    /**
+     * Removes back button functionality, by overriding with empty callback
+     * */
     @Override
     public void onBackPressed() {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for log in
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for local Log In
+     * Blocks sent
+     * query_type, handle, password in that order
      */
     private class LogInRequest extends AsyncTask<String, String, String> {
 
@@ -237,11 +242,10 @@ public class LogIn extends AppCompatActivity {
     }
 
     /**
-     * Connects to Server via TCP socket and requests for LDAP log in
-     * with the given params
-     * <p>
-     * Format Sent
-     * query_type, handle, password (blocks in that order)
+     * Connects to Server via TCP socket
+     * and requests for LDAP Log In
+     * Blocks sent
+     * query_type, handle, password in that order
      */
     private class LDAPLogInRequest extends AsyncTask<String, String, String> {
 

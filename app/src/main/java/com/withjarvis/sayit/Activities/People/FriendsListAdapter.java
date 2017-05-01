@@ -16,6 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Adapter for creating List View for all friends
+ * */
 public class FriendsListAdapter extends BaseAdapter {
     private Context context;
     private JSONArray users;
