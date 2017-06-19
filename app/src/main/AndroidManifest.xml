@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.withjarvis.sayit">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_sayit"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!-- Activities -->
+        <activity android:name=".Activities.Launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.Account.LogIn" />
+        <activity android:name=".Activities.Account.SignUp" />
+        <activity android:name=".Activities.Account.UpdateAccount" />
+        <activity android:name=".Activities.Account.DeleteAccount" />
+        <activity
+            android:name=".Activities.People.People"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Chat.ChatWindow"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Chat.FriendRequest"
+            android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>

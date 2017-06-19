@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+
+        <item
+            android:id="@+id/people_menu_update_account"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Update Account" />
+
+        <item
+            android:id="@+id/people_menu_delete_account"
+            android:icon="@mipmap/ic_launcher"
+            android:title="De-activate" />
+
+        <item
+            android:id="@+id/people_menu_log_out"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Log out" />
+
+    </group>
+
+</menu>

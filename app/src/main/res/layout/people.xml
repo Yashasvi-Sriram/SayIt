@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/people"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.withjarvis.sayit.Activities.People.People">
+
+    <RelativeLayout
+        android:id="@+id/search_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/search_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/submit"
+            android:background="@drawable/search_box_bg"
+            android:fontFamily="monospace"
+            android:hint="Search for people"
+            android:padding="16sp" />
+
+        <Button
+            android:id="@+id/submit"
+            android:background="@drawable/search_box_submit_bg"
+            android:padding="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="54sp"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="monospace"
+            android:textColor="#fff"
+            android:text="Search" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/friends_list_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_div"
+        android:layout_marginBottom="100sp">
+
+        <ListView
+            android:id="@+id/friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/others_list_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_div"
+        android:visibility="gone"
+        android:layout_marginBottom="100sp">
+
+        <ListView
+            android:id="@+id/others_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/friends_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/people_friends_selector" />
+
+</RelativeLayout>
